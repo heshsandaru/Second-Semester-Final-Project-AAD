@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Time Table</title>
+    <!-- Add Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .bus_container {
+            width: 80%;
+            margin: auto;
+            margin-top: 20px;
+        }
+        .table-header {
+            background-color: #143a69;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        td:nth-child(1), td:nth-child(2) {
+            color: #000000;
+        }
+        td:nth-child(3), td:nth-child(4) {
+            color: #000000;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .add-button {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+        }
+        .search-field {
+            margin: 20px auto;
+            width: 50%;
+        }
+        /* Custom Animation for Modal Form */
+        @keyframes slideInFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .modal-body {
+            animation: slideInFromLeft 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Add New Bus Button in Top Right Corner -->
+<div class="bus_container">
+    <h1>Bus Management</h1>
+    <button class="btn btn-success add-button" data-toggle="modal" data-target="#addBusModal" aria-label="Add New Bus">
+        <i class="fas fa-plus"></i> Add New Bus
+    </button>
+
+    <!-- Search Field Centered on Screen -->
+    <div class="search-field">
+        <input type="text" class="form-control" id="searchBus" placeholder="Search for buses...">
+    </div>
+
+    <div class="table-header">Results Of Buses Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Bus Number</th>
+            <th>Bus Model</th>
+            <th>Seats Count</th>
+            <th>Bus Type</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal for Adding New Bus -->
+<div class="modal fade" id="addBusModal" tabindex="-1" role="dialog" aria-labelledby="addBusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBusModalLabel"><b>Add New Bus</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bus-form">
+                    <div class="form-group">
+                        <label for="busNumber">Bus Number</label>
+                        <input type="text" class="form-control" id="busNumber" placeholder="Enter Bus Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busModel">Bus Model</label>
+                        <input type="text" class="form-control" id="busModel" placeholder="Enter Bus Model" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seatCount">Seats Count</label>
+                        <input type="number" class="form-control" id="seatCount" placeholder="Enter Seats Count" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busType">Bus Type</label>
+                        <select class="form-control" id="busType" required>
+                            <option value="">Select</option>
+                            <option>LUXURY</option>
+                            <option>SEMI_LUXURY</option>
+                            <option>NORMAL</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="addBusButton" disabled>Add Bus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Correct jQuery version -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    $(document).ready(function () {
+        let isEditMode = false;
+        let editBusNumber = "";
+
+        $("#bus-form").on("input", function () {
+            let busNumber = $("#busNumber").val().trim();
+            let busModel = $("#busModel").val().trim();
+            let seatCount = $("#seatCount").val().trim();
+            let busType = $("#busType").val().trim();
+
+            $("#addBusButton").prop("disabled", !(busNumber && busModel && seatCount && busType));
+        });
+
+        $("#bus-form").on("submit", function (event) {
+            event.preventDefault();
+
+            let busData = {
+                bus_number: $("#busNumber").val(),
+                bus_name: $("#busModel").val(),
+                total_seats: $("#seatCount").val(),
+                bus_type: $("#busType").val()
+            };
+
+            if (isEditMode) {
+                // Update existing bus
+                $.ajax({
+                    url: "http://localhost:8080/api/v1/journeyPass/bus/update",
+                    method: "PUT",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("authToken"),
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify(busData),
+                    success: function (response) {
+                        new Noty({
+                            type: "success",
+                            layout: "topLeft",
+                            text: "Bus updated successfully!",
+                            timeout: 2000
+                        }).show();
+
+                        resetForm();
+                        loadAllBuses();
+                    },
+                    error: function (xhr) {
+                        new Noty({
+                            type: "error",
+                            layout: "topLeft",
+                            text: "Failed to update bus: " + xhr.responseText,
+                            timeout: 2000
+                        }).show();
+                    }
+                });
+            } else {
+                // Add new bus
+                $.ajax({
+                    url: "http://localhost:8080/api/v1/journeyPass/bus/post",
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + localStorage.getItem("authToken"),
+                        "Content-Type": "application/json"
+                    },
+                    data: JSON.stringify(busData),
+                    success: function (response) {
+                        new Noty({
+                            type: "success",
+                            layout: "topLeft",
+                            text: "Bus added successfully!",
+                            timeout: 2000
+                        }).show();
+
+                        resetForm();
+                        loadAllBuses();
+                    },
+                    error: function (xhr) {
+                        new Noty({
+                            type: "error",
+                            layout: "topLeft",
+                            text: "Failed to add bus: " + xhr.responseText,
+                            timeout: 2000
+                        }).show();
+                    }
+                });
+            }
+        });
+
+        function loadAllBuses() {
+            $.ajax({
+                url: "http://localhost:8080/api/v1/journeyPass/bus/getAll",
+                type: "GET",
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("authToken"),
+                    "Content-Type": "application/json"
+                },
+                success: function (buses) {
+                    let tbody = $("table tbody");
+                    tbody.empty();
+
+                    if (buses.length > 0) {
+                        buses.forEach((bus) => {
+                            let row = `<tr>
+                            <td>${bus.bus_number}</td>
+                            <td>${bus.bus_name}</td>
+                            <td>${bus.total_seats}</td>
+                            <td>${bus.bus_type}</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-dark edit-bus" data-bus='${JSON.stringify(bus)}'><i class="fas fa-pen"></i></button>
+                                <button class="btn btn-sm btn-outline-danger delete-bus" data-bus-number="${bus.bus_number}"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>`;
+                            tbody.append(row);
+                        });
+                    } else {
+                        tbody.append("<tr><td colspan='5'>No buses available</td></tr>");
+                    }
+                },
+                error: function () {
+                    new Noty({
+                        type: "error",
+                        layout: "topLeft",
+                        text: "Failed to load bus details!",
+                        timeout: 2000
+                    }).show();
+                }
+            });
+        }
+
+        function resetForm() {
+            $("#bus-form")[0].reset();
+            $("#addBusButton").prop("disabled", true);
+            $("#busNumber").prop("disabled", false);
+            isEditMode = false;
+            editBusNumber = "";
+            $("#addBusModal").modal("hide");
+            $("#addBusButton").text("Add Bus");
+            $("#addBusModalLabel").text("Add New Bus");
+        }
+
+        // Handle Edit Bus button click
+        $(document).on("click", ".edit-bus", function () {
+            let busData = $(this).data("bus");
+
+            $("#busNumber").val(busData.bus_number).prop("disabled", true);
+            $("#busModel").val(busData.bus_name);
+            $("#seatCount").val(busData.total_seats);
+            $("#busType").val(busData.bus_type);
+
+            isEditMode = true;
+            editBusNumber = busData.bus_number;
+
+            $("#addBusButton").prop("disabled", false).text("Update Bus");
+            $("#addBusModalLabel").text("Update Bus Details");
+            $("#addBusModal").modal("show");
+        });
+
+        loadAllBuses();
+    });
+
+    $(document).ready(function () {
+        // DELETE BUS
+        $(document).on("click", ".delete-bus", function () {
+            let busNumber = $(this).data("bus-number");
+            let row = $(this).closest("tr");
+
+            new Noty({
+                text: `Are you sure you want to delete bus number ${busNumber}?`,
+                type: "warning",
+                layout: "topCenter",
+                timeout: false,
+                killer: true,
+                buttons: [
+                    Noty.button("Yes", "btn btn-danger", function () {
+                        $.ajax({
+                            url: "http://localhost:8080/api/v1/journeyPass/bus/delete",
+                            type: "DELETE",
+                            headers: {
+                                "Authorization": "Bearer " + localStorage.getItem("authToken"),
+                                "Content-Type": "application/json"
+                            },
+                            data: JSON.stringify({bus_number: busNumber}),
+                            success: function (response) {
+                                if (response.code === 201) {
+                                    new Noty({
+                                        type: "success",
+                                        layout: "topLeft",
+                                        text: "Bus deleted successfully!",
+                                        timeout: 2000
+                                    }).show();
+                                    row.remove(); // Remove row from table
+                                } else {
+                                    new Noty({
+                                        type: "error",
+                                        layout: "topLeft",
+                                        text: "Failed to delete bus!",
+                                        timeout: 2000
+                                    }).show();
+                                }
+                            },
+                            error: function () {
+                                new Noty({
+                                    type: "error",
+                                    layout: "topLeft",
+                                    text: "Error deleting bus!",
+                                    timeout: 2000
+                                }).show();
+                            }
+                        });
+                        Noty.closeAll();
+                    }),
+                    Noty.button("No", "btn btn-secondary", function () {
+                        Noty.closeAll();
+                    })
+                ]
+            }).show();
+        });
+    });
+
+    $(document).ready(function () {
+        $("#searchBus").on("keypress", function (event) {
+            if (event.which === 13) { // Enter key pressed
+                let busNumber = $(this).val().trim();
+
+                if (busNumber === "") {
+                    return;
+                }
+
+                $.ajax({
+                    url: `http://localhost:8080/api/v1/journeyPass/bus/search?bus_number=${busNumber}`,
+                    type: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + (localStorage.getItem("authToken") || ""),
+                        "Content-Type": "application/json"
+                    },
+                    success: function (response) {
+                        console.log("Response received:", response); // Debugging log
+
+                        if (response && response.data) { // Ensure response has data
+                            let bus = response.data;
+
+                            new Noty({
+                                type: "success",
+                                layout: "topLeft",
+                                text: `Bus Found! <br>
+                               Number: ${bus.bus_number} <br>
+                               Model: ${bus.bus_name} <br>
+                               Seats: ${bus.total_seats} <br>
+                               Type: ${bus.bus_type}`,
+                                timeout: 4000
+                            }).show();
+                        } else {
+                            new Noty({
+                                type: "error",
+                                layout: "topLeft",
+                                text: `Bus number ${busNumber} not found!`,
+                                timeout: 2000
+                            }).show();
+                        }
+                    },
+                    error: function (xhr) {
+                        console.error("Search error:", xhr.responseText); // Debugging log
+
+                        let errorMessage = "Error searching for bus!";
+                        if (xhr.responseText) {
+                            errorMessage = `Server Error: ${xhr.responseText}`;
+                        }
+
+                        new Noty({
+                            type: "error",
+                            layout: "topLeft",
+                            text: errorMessage,
+                            timeout: 2000
+                        }).show();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

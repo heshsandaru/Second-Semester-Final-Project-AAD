@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Seat Reservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: #010148;
+            padding: 10px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header>span{
+            font-family: Copperplate;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .banner {
+            position: relative;
+            background: url('assets/images/que-es-una-smart-city-Sep-26-2023-08-45-45-1500-AM.jpg') no-repeat center center/cover;
+            height: 300px;
+            display: flex;
+            align-items: start;
+            justify-content: center;
+            padding-top: 20px;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .search-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #eaf2fa;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 1000px;
+        }
+        .about-section {
+            padding: 50px 30px; /* Increased top and bottom padding */
+            background: #21214b;
+            color: white;
+            text-align: center;
+        }
+        .about-section h2 {
+            margin-bottom: 20px; /* Increased margin-bottom */
+            font-size: 30px;
+        }
+        .about-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #btn-search {
+            background-color: #f1c40f;
+            border: none;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        #btn-search:hover {
+            background-color: darkorange;
+        }
+        .partners img {
+            max-height: 80px;
+            margin: 0 20px;
+            max-width: 100%;
+            display: inline-block;
+        }
+        .row .col-md-6 p {
+            text-align: justify;
+        }
+        @media (max-width: 768px) {
+            .about-section h2 {
+                font-size: 24px;
+            }
+            .about-section .container {
+                padding: 0 20px;
+            }
+            .partners {
+                text-align: center;
+                margin-top: 40px;
+            }
+        }
+        #btn-timeTable{
+            background-color: #f1c40f;
+            border: none;
+            color: white;
+            font-weight: bold;
+        }
+        #btn-timeTable:hover{
+            background-color: darkorange;
+        }
+
+        .footer {
+            background-color: #0d1726;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .feedback-box {
+            background: #f4a52d;
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            max-width: 250px;   /* Set a fixed maximum width */
+            height: 180px;
+            width: 100%;
+        }
+
+        .feedback-text {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .footer-img {
+            width: 100%;        /* Make sure it adapts to its container */
+            max-width: 250px;   /* Set a fixed maximum width */
+            height: 180px;      /* Set a fixed height to make all images uniform */
+            object-fit: cover;  /* Ensures the image fills the box without stretching */
+            border-radius: 10px;
+        }
+
+        #feedback{
+            width: 100%;        /* Make sure it adapts to its container */
+            max-width: 250px;   /* Set a fixed maximum width */
+            height: 180px;      /* Set a fixed height to make all images uniform */
+            object-fit: cover;  /* Ensures the image fills the box without stretching */
+            border-radius: 10px;
+        }
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            margin-top: 20px;
+            border-top: 1px solid #444;
+            padding-top: 10px;
+        }
+
+        .whatsapp-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;  /* Set width */
+            height: 60px; /* Set height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #25d366;
+            padding: 10px;
+            border-radius: 50%; /* Makes it a perfect circle */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+        }
+
+        .whatsapp-button img {
+            width: 35px; /* Adjust the icon size */
+            margin: 0; /* Remove margin */
+        }
+        .whatsapp-button::after {
+            content: "Need Help?";
+            position: absolute;
+            bottom: 70px; /* Position above the button */
+            right: 50%;
+            transform: translateX(50%);
+            background: #333;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .whatsapp-button:hover::after {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .search-section {
+            background: #0b3b61;
+            padding: 20px;
+            color: white;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: -5px;
+            max-width: 1200px;
+        }
+
+        .search-title {
+            text-align: left;
+            font-size: 20px;
+            font-weight: bold;
+            padding-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .search-btn {
+            background-color: #f18b21;
+            border: none;
+            width: 100%;
+            height: 40px;
+        }
+
+        .search-section {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <span>JourneyPass</span>
+    <div>
+        <a href="#" class="text-white">Home</a> |
+        <a href="#" class="text-white">Send Ticket</a> |
+        <a href="#" class="text-white">Transfer Ticket</a> |
+        <a href="#" class="text-white">Login</a>
+    </div>
+</div>
+
+<!-- Banner Section -->
+<div class="banner">
+    <div class="overlay"></div>
+
+    <!-- Online Seat Reservation Form (Initially Visible) -->
+    <div class="reservation-form" id="reservation-form">
+        <h3>Online Seat Reservation</h3>
+        <div class="row g-2 mt-3">
+            <!-- Your reservation form fields -->
+            <div class="col-md-4">
+                <input list="from-list" class="form-control" placeholder="From">
+                <datalist id="from-list">
+                    <option value="Colombo"></option>
+                    <option value="Kandy"></option>
+                    <option value="Galle"></option>
+                    <option value="Matale"></option>
+                </datalist>
+            </div>
+            <div class="col-md-4">
+                <input list="to-list" class="form-control" placeholder="To">
+                <datalist id="to-list">
+                    <option value="Colombo"></option>
+                    <option value="Kandy"></option>
+                    <option value="Galle"></option>
+                    <option value="Matale"></option>
+                </datalist>
+            </div>
+            <div class="col-md-3">
+                <input type="date" class="form-control" value="2025-03-21">
+            </div>
+            <div class="col-md-1">
+                <button id="btn-search" class="btn">Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Section (Initially Hidden) -->
+    <div class="search-section" id="search-section" style="display: none;">
+        <div class="container">
+            <h3 class="search-title">Search Bus Time Table</h3>
+            <div class="row">
+                <!-- Your search form fields -->
+                <div class="col-md-2">
+                    <label>From *</label>
+                    <input list="from-list" class="form-control" placeholder="From">
+                    <datalist id="from-search-list">
+                        <option value="Colombo"></option>
+                        <option value="Kandy"></option>
+                        <option value="Galle"></option>
+                        <option value="Matale"></option>
+                    </datalist>
+                </div>
+                <div class="col-md-2">
+                    <label>To *</label>
+                    <input list="to-list" class="form-control" placeholder="To">
+                    <datalist id="to-search-list">
+                        <option value="Colombo"></option>
+                        <option value="Kandy"></option>
+                        <option value="Galle"></option>
+                        <option value="Matale"></option>
+                    </datalist>
+                </div>
+                <div class="col-md-2">
+                    <label for="start-time">Start Time</label>
+                    <select id="start-time" class="form-select">
+                        <option>Select</option>
+                        <option>00:00</option>
+                        <option>00:05</option>
+                        <option>00:10</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label for="bus-type">Bus Type</label>
+                    <select id="bus-type" class="form-select">
+                        <option>Any</option>
+                        <option>NORMAL</option>
+                        <option>SEMI-LUXURY</option>
+                        <option>LUXURY</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary search-btn">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer and other sections remain as is -->
+
+<section class="about-section">
+    <div class="container">
+        <div class="text-center">
+            <button id="btn-timeTable" class="btn btn-warning btn-lg" style="margin-bottom: 30px;">Bus Time Table</button> <!-- Added margin-bottom -->
+        </div>
+        <h2 class="text-center">About Us</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p>
+                    We, <a href="#">journeyPass</a>, are Sri Lanka’s largest online bus/coach reservation platform,
+                    transforming the way millions of Sri Lankans travel and purchase seats across the country.
+                </p>
+                <p>
+                    <a href="#">journeyPass</a> is a collaboration between Sri Lanka Transport Board (SLTB)
+                    and Hands Global Holdings (HGHL). SLTB, Sri Lanka’s state-owned transport service, operates
+                    the largest and most reliable fleet of highway and regional buses in the country. HGHL is
+                    part of a group of companies including <a href="#">NTC</a>, Duro Pipe Industrial Ltd,
+                    St. Joseph’s Exports (Pvt) Ltd, and Duro Capital (Pvt) Ltd.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <p>
+                    We offer online bus ticket booking services, a 24/7 customer support hotline (1315),
+                    bus tracking, and fleet management. Our secure payment gateways are powered by
+                    People’s Bank PLC.
+                </p>
+                <p>
+                    Customers can modify bookings based on our seat cancellation policy. You will be
+                    notified of any schedule changes, and our mobile app allows bus tracking and
+                    seat reservations up to one month in advance.
+                </p>
+            </div>
+        </div>
+
+        <div class="partners">
+            <img src="assets/images/ntc.jpg" alt="Ohmygosh.lk">
+            <img src="assets/images/sltb_logo.png" alt="Hands Global Holdings">
+            <img src="assets/images/1955.jpg" alt="St. Joseph's Exports">
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <!-- Feedback Section -->
+            <div id="" class="col-md-4 text-center">
+                <div class="feedback-box">
+                    <span class="feedback-icon">💬</span>
+                    <span class="feedback-text">Feedback</span>
+                </div>
+            </div>
+
+            <!-- Image Links Section -->
+            <div class="col-md-4 text-center">
+                <img src="assets/images/panadura-to-kankesanthurai-ncg-express-bus.webp" alt="Reserve an Entire Bus" class="footer-img">
+                <p>RESERVE AN ENTIRE BUS</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img src="assets/images/istockphoto-1287186685-612x612.jpg" alt="News" class="footer-img">
+                <p>NEWS</p>
+            </div>
+        </div>
+
+        <!-- Footer Links -->
+        <div class="row footer-links">
+            <div class="col-md-3">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Send Ticket</a></li>
+                    <li><a href="#">Transfer Ticket</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">T & C</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 ms-auto text-end">
+                <p><strong>journeyPass</strong></p>
+                <p>No. 129/5, Galle Road, Panadura, Sri Lanka.</p>
+                <p>heshansandaruwan999@gmail.com</p>
+            </div>
+        </div>
+
+        <!-- Copyright and Contact Details -->
+        <div class="row footer-bottom text-center">
+            <div class="col-12">
+                <p>©2025 charithmihiranga453@gmail.com. All rights reserved</p>
+            </div>
+        </div>
+
+        <!-- WhatsApp Button -->
+        <div class="whatsapp-button">
+            <img src="assets/images/icons8-whatsapp-50.png" alt="WhatsApp">
+        </div>
+    </div>
+</footer>
+
+<!--<div class="search-section">-->
+<!--    <div class="container">-->
+<!--        <h3 class="search-title">Search Bus Time Table</h3>-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-2">-->
+<!--                <label>From *</label>-->
+<!--                <input list="from-list" class="form-control" placeholder="From">-->
+<!--                <datalist id="from-search-list">-->
+<!--                    <option value="Colombo"></option>-->
+<!--                    <option value="Kandy"></option>-->
+<!--                    <option value="Galle"></option>-->
+<!--                    <option value="Matale"></option>-->
+<!--                </datalist>-->
+<!--            </div>-->
+<!--            <div class="col-md-2">-->
+<!--                <label>To *</label>-->
+<!--                <input list="to-list" class="form-control" placeholder="To">-->
+<!--                <datalist id="to-search-list">-->
+<!--                    <option value="Colombo"></option>-->
+<!--                    <option value="Kandy"></option>-->
+<!--                    <option value="Galle"></option>-->
+<!--                    <option value="Matale"></option>-->
+<!--                </datalist>-->
+<!--            </div>-->
+<!--            <div class="col-md-2">-->
+<!--                <label for="start-time">Start Time</label>-->
+<!--                <select id="start-time" class="form-select">-->
+<!--                    <option>Select</option>-->
+<!--                    <option>00:00</option>-->
+<!--                    <option>00:05</option>-->
+<!--                    <option>00:10</option>-->
+<!--                    <option>00:15</option>-->
+<!--                    <option>00:20</option>-->
+<!--                    <option>00:25</option>-->
+<!--                    <option>00:30</option>-->
+<!--                    <option>00:35</option>-->
+<!--                    <option>00:40</option>-->
+<!--                    <option>00:45</option>-->
+<!--                    <option>00:50</option>-->
+<!--                    <option>00:55</option>-->
+<!--                    <option>01:00</option>-->
+<!--                    <option>01:05</option>-->
+<!--                    <option>01:10</option>-->
+<!--                    <option>01:15</option>-->
+<!--                    <option>01:20</option>-->
+<!--                    <option>01:25</option>-->
+<!--                    <option>01:30</option>-->
+<!--                    <option>01:35</option>-->
+<!--                    <option>01:40</option>-->
+<!--                    <option>01:45</option>-->
+<!--                    <option>01:50</option>-->
+<!--                    <option>01:55</option>-->
+<!--                    <option>02:00</option>-->
+<!--                    <option>02:05</option>-->
+<!--                    <option>02:10</option>-->
+<!--                    <option>02:15</option>-->
+<!--                    <option>02:20</option>-->
+<!--                    <option>02:25</option>-->
+<!--                    <option>02:30</option>-->
+<!--                    <option>02:35</option>-->
+<!--                    <option>02:40</option>-->
+<!--                    <option>02:45</option>-->
+<!--                    <option>02:50</option>-->
+<!--                    <option>02:55</option>-->
+<!--                    <option>03:00</option>-->
+<!--                    <option>03:05</option>-->
+<!--                    <option>03:10</option>-->
+<!--                    <option>03:15</option>-->
+<!--                    <option>03:20</option>-->
+<!--                    <option>03:25</option>-->
+<!--                    <option>03:30</option>-->
+<!--                    <option>03:35</option>-->
+<!--                    <option>03:40</option>-->
+<!--                    <option>03:45</option>-->
+<!--                    <option>03:50</option>-->
+<!--                    <option>03:55</option>-->
+<!--                    <option>04:00</option>-->
+<!--                    <option>04:05</option>-->
+<!--                    <option>04:10</option>-->
+<!--                    <option>04:15</option>-->
+<!--                    <option>04:20</option>-->
+<!--                    <option>04:25</option>-->
+<!--                    <option>04:30</option>-->
+<!--                    <option>04:35</option>-->
+<!--                    <option>04:40</option>-->
+<!--                    <option>04:45</option>-->
+<!--                    <option>04:50</option>-->
+<!--                    <option>04:55</option>-->
+<!--                    <option>05:00</option>-->
+<!--                    <option>05:05</option>-->
+<!--                    <option>05:10</option>-->
+<!--                    <option>05:15</option>-->
+<!--                    <option>05:20</option>-->
+<!--                    <option>05:25</option>-->
+<!--                    <option>05:30</option>-->
+<!--                    <option>05:35</option>-->
+<!--                    <option>05:40</option>-->
+<!--                    <option>05:45</option>-->
+<!--                    <option>05:50</option>-->
+<!--                    <option>05:55</option>-->
+<!--                    <option>06:00</option>-->
+<!--                    <option>06:05</option>-->
+<!--                    <option>06:10</option>-->
+<!--                    <option>06:15</option>-->
+<!--                    <option>06:20</option>-->
+<!--                    <option>06:25</option>-->
+<!--                    <option>06:30</option>-->
+<!--                    <option>06:35</option>-->
+<!--                    <option>06:40</option>-->
+<!--                    <option>06:45</option>-->
+<!--                    <option>06:50</option>-->
+<!--                    <option>06:55</option>-->
+<!--                    <option>07:00</option>-->
+<!--                    <option>07:05</option>-->
+<!--                    <option>07:10</option>-->
+<!--                    <option>07:15</option>-->
+<!--                    <option>07:20</option>-->
+<!--                    <option>07:25</option>-->
+<!--                    <option>07:30</option>-->
+<!--                    <option>07:35</option>-->
+<!--                    <option>07:40</option>-->
+<!--                    <option>07:45</option>-->
+<!--                    <option>07:50</option>-->
+<!--                    <option>07:55</option>-->
+<!--                    <option>08:00</option>-->
+<!--                    <option>08:05</option>-->
+<!--                    <option>08:10</option>-->
+<!--                    <option>08:15</option>-->
+<!--                    <option>08:20</option>-->
+<!--                    <option>08:25</option>-->
+<!--                    <option>08:30</option>-->
+<!--                    <option>08:35</option>-->
+<!--                    <option>08:40</option>-->
+<!--                    <option>08:45</option>-->
+<!--                    <option>08:50</option>-->
+<!--                    <option>08:55</option>-->
+<!--                    <option>09:00</option>-->
+<!--                    <option>09:05</option>-->
+<!--                    <option>09:10</option>-->
+<!--                    <option>09:15</option>-->
+<!--                    <option>09:20</option>-->
+<!--                    <option>09:25</option>-->
+<!--                    <option>09:30</option>-->
+<!--                    <option>09:35</option>-->
+<!--                    <option>09:40</option>-->
+<!--                    <option>09:45</option>-->
+<!--                    <option>09:50</option>-->
+<!--                    <option>09:55</option>-->
+<!--                    <option>10:00</option>-->
+<!--                    <option>10:05</option>-->
+<!--                    <option>10:10</option>-->
+<!--                    <option>10:15</option>-->
+<!--                    <option>10:20</option>-->
+<!--                    <option>10:25</option>-->
+<!--                    <option>10:30</option>-->
+<!--                    <option>10:35</option>-->
+<!--                    <option>10:40</option>-->
+<!--                    <option>10:45</option>-->
+<!--                    <option>10:50</option>-->
+<!--                    <option>10:55</option>-->
+<!--                    <option>11:00</option>-->
+<!--                    <option>11:05</option>-->
+<!--                    <option>11:10</option>-->
+<!--                    <option>11:15</option>-->
+<!--                    <option>11:20</option>-->
+<!--                    <option>11:25</option>-->
+<!--                    <option>11:30</option>-->
+<!--                    <option>11:35</option>-->
+<!--                    <option>11:40</option>-->
+<!--                    <option>11:45</option>-->
+<!--                    <option>11:50</option>-->
+<!--                    <option>11:55</option>-->
+<!--                    <option>12:00</option>-->
+<!--                    <option>12:05</option>-->
+<!--                    <option>12:10</option>-->
+<!--                    <option>12:15</option>-->
+<!--                    <option>12:20</option>-->
+<!--                    <option>12:25</option>-->
+<!--                    <option>12:30</option>-->
+<!--                    <option>12:35</option>-->
+<!--                    <option>12:40</option>-->
+<!--                    <option>12:45</option>-->
+<!--                    <option>12:50</option>-->
+<!--                    <option>12:55</option>-->
+<!--                    <option>13:00</option>-->
+<!--                    <option>13:05</option>-->
+<!--                    <option>13:10</option>-->
+<!--                    <option>13:15</option>-->
+<!--                    <option>13:20</option>-->
+<!--                    <option>13:25</option>-->
+<!--                    <option>13:30</option>-->
+<!--                    <option>13:35</option>-->
+<!--                    <option>13:40</option>-->
+<!--                    <option>13:45</option>-->
+<!--                    <option>13:50</option>-->
+<!--                    <option>13:55</option>-->
+<!--                    <option>14:00</option>-->
+<!--                    <option>14:05</option>-->
+<!--                    <option>14:10</option>-->
+<!--                    <option>14:15</option>-->
+<!--                    <option>14:20</option>-->
+<!--                    <option>14:25</option>-->
+<!--                    <option>14:30</option>-->
+<!--                    <option>14:35</option>-->
+<!--                    <option>14:40</option>-->
+<!--                    <option>14:45</option>-->
+<!--                    <option>14:50</option>-->
+<!--                    <option>14:55</option>-->
+<!--                    <option>15:00</option>-->
+<!--                    <option>15:05</option>-->
+<!--                    <option>15:10</option>-->
+<!--                    <option>15:15</option>-->
+<!--                    <option>15:20</option>-->
+<!--                    <option>15:25</option>-->
+<!--                    <option>15:30</option>-->
+<!--                    <option>15:35</option>-->
+<!--                    <option>15:40</option>-->
+<!--                    <option>15:45</option>-->
+<!--                    <option>15:50</option>-->
+<!--                    <option>15:55</option>-->
+<!--                    <option>16:00</option>-->
+<!--                    <option>16:05</option>-->
+<!--                    <option>16:10</option>-->
+<!--                    <option>16:15</option>-->
+<!--                    <option>16:20</option>-->
+<!--                    <option>16:25</option>-->
+<!--                    <option>16:30</option>-->
+<!--                    <option>16:35</option>-->
+<!--                    <option>16:40</option>-->
+<!--                    <option>16:45</option>-->
+<!--                    <option>16:50</option>-->
+<!--                    <option>16:55</option>-->
+<!--                    <option>17:00</option>-->
+<!--                    <option>17:05</option>-->
+<!--                    <option>17:10</option>-->
+<!--                    <option>17:15</option>-->
+<!--                    <option>17:20</option>-->
+<!--                    <option>17:25</option>-->
+<!--                    <option>17:30</option>-->
+<!--                    <option>17:35</option>-->
+<!--                    <option>17:40</option>-->
+<!--                    <option>17:45</option>-->
+<!--                    <option>17:50</option>-->
+<!--                    <option>17:55</option>-->
+<!--                    <option>18:00</option>-->
+<!--                    <option>18:05</option>-->
+<!--                    <option>18:10</option>-->
+<!--                    <option>18:15</option>-->
+<!--                    <option>18:20</option>-->
+<!--                    <option>18:25</option>-->
+<!--                    <option>18:30</option>-->
+<!--                    <option>18:35</option>-->
+<!--                    <option>18:40</option>-->
+<!--                    <option>18:45</option>-->
+<!--                    <option>18:50</option>-->
+<!--                    <option>18:55</option>-->
+<!--                    <option>19:00</option>-->
+<!--                    <option>19:05</option>-->
+<!--                    <option>19:10</option>-->
+<!--                    <option>19:15</option>-->
+<!--                    <option>19:20</option>-->
+<!--                    <option>19:25</option>-->
+<!--                    <option>19:30</option>-->
+<!--                    <option>19:35</option>-->
+<!--                    <option>19:40</option>-->
+<!--                    <option>19:45</option>-->
+<!--                    <option>19:50</option>-->
+<!--                    <option>19:55</option>-->
+<!--                    <option>20:00</option>-->
+<!--                    <option>20:05</option>-->
+<!--                    <option>20:10</option>-->
+<!--                    <option>20:15</option>-->
+<!--                    <option>20:20</option>-->
+<!--                    <option>20:25</option>-->
+<!--                    <option>20:30</option>-->
+<!--                    <option>20:35</option>-->
+<!--                    <option>20:40</option>-->
+<!--                    <option>20:45</option>-->
+<!--                    <option>20:50</option>-->
+<!--                    <option>20:55</option>-->
+<!--                    <option>21:00</option>-->
+<!--                    <option>21:05</option>-->
+<!--                    <option>21:10</option>-->
+<!--                    <option>21:15</option>-->
+<!--                    <option>21:20</option>-->
+<!--                    <option>21:25</option>-->
+<!--                    <option>21:30</option>-->
+<!--                    <option>21:35</option>-->
+<!--                    <option>21:40</option>-->
+<!--                    <option>21:45</option>-->
+<!--                    <option>21:50</option>-->
+<!--                    <option>21:55</option>-->
+<!--                    <option>22:00</option>-->
+<!--                    <option>22:05</option>-->
+<!--                    <option>22:10</option>-->
+<!--                    <option>22:15</option>-->
+<!--                    <option>22:20</option>-->
+<!--                    <option>22:25</option>-->
+<!--                    <option>22:30</option>-->
+<!--                    <option>22:35</option>-->
+<!--                    <option>22:40</option>-->
+<!--                    <option>22:45</option>-->
+<!--                    <option>22:50</option>-->
+<!--                    <option>22:55</option>-->
+<!--                    <option>23:00</option>-->
+<!--                    <option>23:05</option>-->
+<!--                    <option>23:10</option>-->
+<!--                    <option>23:15</option>-->
+<!--                    <option>23:20</option>-->
+<!--                    <option>23:25</option>-->
+<!--                    <option>23:30</option>-->
+<!--                    <option>23:35</option>-->
+<!--                    <option>23:40</option>-->
+<!--                    <option>23:45</option>-->
+<!--                    <option>23:50</option>-->
+<!--                    <option>23:55</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="col-md-2">-->
+<!--                <label for="end-time">End Time</label>-->
+<!--                <select id="end-time" class="form-select">-->
+<!--                    <option>Select</option>-->
+<!--                    <option>00:00</option>-->
+<!--                    <option>00:05</option>-->
+<!--                    <option>00:10</option>-->
+<!--                    <option>00:15</option>-->
+<!--                    <option>00:20</option>-->
+<!--                    <option>00:25</option>-->
+<!--                    <option>00:30</option>-->
+<!--                    <option>00:35</option>-->
+<!--                    <option>00:40</option>-->
+<!--                    <option>00:45</option>-->
+<!--                    <option>00:50</option>-->
+<!--                    <option>00:55</option>-->
+<!--                    <option>01:00</option>-->
+<!--                    <option>01:05</option>-->
+<!--                    <option>01:10</option>-->
+<!--                    <option>01:15</option>-->
+<!--                    <option>01:20</option>-->
+<!--                    <option>01:25</option>-->
+<!--                    <option>01:30</option>-->
+<!--                    <option>01:35</option>-->
+<!--                    <option>01:40</option>-->
+<!--                    <option>01:45</option>-->
+<!--                    <option>01:50</option>-->
+<!--                    <option>01:55</option>-->
+<!--                    <option>02:00</option>-->
+<!--                    <option>02:05</option>-->
+<!--                    <option>02:10</option>-->
+<!--                    <option>02:15</option>-->
+<!--                    <option>02:20</option>-->
+<!--                    <option>02:25</option>-->
+<!--                    <option>02:30</option>-->
+<!--                    <option>02:35</option>-->
+<!--                    <option>02:40</option>-->
+<!--                    <option>02:45</option>-->
+<!--                    <option>02:50</option>-->
+<!--                    <option>02:55</option>-->
+<!--                    <option>03:00</option>-->
+<!--                    <option>03:05</option>-->
+<!--                    <option>03:10</option>-->
+<!--                    <option>03:15</option>-->
+<!--                    <option>03:20</option>-->
+<!--                    <option>03:25</option>-->
+<!--                    <option>03:30</option>-->
+<!--                    <option>03:35</option>-->
+<!--                    <option>03:40</option>-->
+<!--                    <option>03:45</option>-->
+<!--                    <option>03:50</option>-->
+<!--                    <option>03:55</option>-->
+<!--                    <option>04:00</option>-->
+<!--                    <option>04:05</option>-->
+<!--                    <option>04:10</option>-->
+<!--                    <option>04:15</option>-->
+<!--                    <option>04:20</option>-->
+<!--                    <option>04:25</option>-->
+<!--                    <option>04:30</option>-->
+<!--                    <option>04:35</option>-->
+<!--                    <option>04:40</option>-->
+<!--                    <option>04:45</option>-->
+<!--                    <option>04:50</option>-->
+<!--                    <option>04:55</option>-->
+<!--                    <option>05:00</option>-->
+<!--                    <option>05:05</option>-->
+<!--                    <option>05:10</option>-->
+<!--                    <option>05:15</option>-->
+<!--                    <option>05:20</option>-->
+<!--                    <option>05:25</option>-->
+<!--                    <option>05:30</option>-->
+<!--                    <option>05:35</option>-->
+<!--                    <option>05:40</option>-->
+<!--                    <option>05:45</option>-->
+<!--                    <option>05:50</option>-->
+<!--                    <option>05:55</option>-->
+<!--                    <option>06:00</option>-->
+<!--                    <option>06:05</option>-->
+<!--                    <option>06:10</option>-->
+<!--                    <option>06:15</option>-->
+<!--                    <option>06:20</option>-->
+<!--                    <option>06:25</option>-->
+<!--                    <option>06:30</option>-->
+<!--                    <option>06:35</option>-->
+<!--                    <option>06:40</option>-->
+<!--                    <option>06:45</option>-->
+<!--                    <option>06:50</option>-->
+<!--                    <option>06:55</option>-->
+<!--                    <option>07:00</option>-->
+<!--                    <option>07:05</option>-->
+<!--                    <option>07:10</option>-->
+<!--                    <option>07:15</option>-->
+<!--                    <option>07:20</option>-->
+<!--                    <option>07:25</option>-->
+<!--                    <option>07:30</option>-->
+<!--                    <option>07:35</option>-->
+<!--                    <option>07:40</option>-->
+<!--                    <option>07:45</option>-->
+<!--                    <option>07:50</option>-->
+<!--                    <option>07:55</option>-->
+<!--                    <option>08:00</option>-->
+<!--                    <option>08:05</option>-->
+<!--                    <option>08:10</option>-->
+<!--                    <option>08:15</option>-->
+<!--                    <option>08:20</option>-->
+<!--                    <option>08:25</option>-->
+<!--                    <option>08:30</option>-->
+<!--                    <option>08:35</option>-->
+<!--                    <option>08:40</option>-->
+<!--                    <option>08:45</option>-->
+<!--                    <option>08:50</option>-->
+<!--                    <option>08:55</option>-->
+<!--                    <option>09:00</option>-->
+<!--                    <option>09:05</option>-->
+<!--                    <option>09:10</option>-->
+<!--                    <option>09:15</option>-->
+<!--                    <option>09:20</option>-->
+<!--                    <option>09:25</option>-->
+<!--                    <option>09:30</option>-->
+<!--                    <option>09:35</option>-->
+<!--                    <option>09:40</option>-->
+<!--                    <option>09:45</option>-->
+<!--                    <option>09:50</option>-->
+<!--                    <option>09:55</option>-->
+<!--                    <option>10:00</option>-->
+<!--                    <option>10:05</option>-->
+<!--                    <option>10:10</option>-->
+<!--                    <option>10:15</option>-->
+<!--                    <option>10:20</option>-->
+<!--                    <option>10:25</option>-->
+<!--                    <option>10:30</option>-->
+<!--                    <option>10:35</option>-->
+<!--                    <option>10:40</option>-->
+<!--                    <option>10:45</option>-->
+<!--                    <option>10:50</option>-->
+<!--                    <option>10:55</option>-->
+<!--                    <option>11:00</option>-->
+<!--                    <option>11:05</option>-->
+<!--                    <option>11:10</option>-->
+<!--                    <option>11:15</option>-->
+<!--                    <option>11:20</option>-->
+<!--                    <option>11:25</option>-->
+<!--                    <option>11:30</option>-->
+<!--                    <option>11:35</option>-->
+<!--                    <option>11:40</option>-->
+<!--                    <option>11:45</option>-->
+<!--                    <option>11:50</option>-->
+<!--                    <option>11:55</option>-->
+<!--                    <option>12:00</option>-->
+<!--                    <option>12:05</option>-->
+<!--                    <option>12:10</option>-->
+<!--                    <option>12:15</option>-->
+<!--                    <option>12:20</option>-->
+<!--                    <option>12:25</option>-->
+<!--                    <option>12:30</option>-->
+<!--                    <option>12:35</option>-->
+<!--                    <option>12:40</option>-->
+<!--                    <option>12:45</option>-->
+<!--                    <option>12:50</option>-->
+<!--                    <option>12:55</option>-->
+<!--                    <option>13:00</option>-->
+<!--                    <option>13:05</option>-->
+<!--                    <option>13:10</option>-->
+<!--                    <option>13:15</option>-->
+<!--                    <option>13:20</option>-->
+<!--                    <option>13:25</option>-->
+<!--                    <option>13:30</option>-->
+<!--                    <option>13:35</option>-->
+<!--                    <option>13:40</option>-->
+<!--                    <option>13:45</option>-->
+<!--                    <option>13:50</option>-->
+<!--                    <option>13:55</option>-->
+<!--                    <option>14:00</option>-->
+<!--                    <option>14:05</option>-->
+<!--                    <option>14:10</option>-->
+<!--                    <option>14:15</option>-->
+<!--                    <option>14:20</option>-->
+<!--                    <option>14:25</option>-->
+<!--                    <option>14:30</option>-->
+<!--                    <option>14:35</option>-->
+<!--                    <option>14:40</option>-->
+<!--                    <option>14:45</option>-->
+<!--                    <option>14:50</option>-->
+<!--                    <option>14:55</option>-->
+<!--                    <option>15:00</option>-->
+<!--                    <option>15:05</option>-->
+<!--                    <option>15:10</option>-->
+<!--                    <option>15:15</option>-->
+<!--                    <option>15:20</option>-->
+<!--                    <option>15:25</option>-->
+<!--                    <option>15:30</option>-->
+<!--                    <option>15:35</option>-->
+<!--                    <option>15:40</option>-->
+<!--                    <option>15:45</option>-->
+<!--                    <option>15:50</option>-->
+<!--                    <option>15:55</option>-->
+<!--                    <option>16:00</option>-->
+<!--                    <option>16:05</option>-->
+<!--                    <option>16:10</option>-->
+<!--                    <option>16:15</option>-->
+<!--                    <option>16:20</option>-->
+<!--                    <option>16:25</option>-->
+<!--                    <option>16:30</option>-->
+<!--                    <option>16:35</option>-->
+<!--                    <option>16:40</option>-->
+<!--                    <option>16:45</option>-->
+<!--                    <option>16:50</option>-->
+<!--                    <option>16:55</option>-->
+<!--                    <option>17:00</option>-->
+<!--                    <option>17:05</option>-->
+<!--                    <option>17:10</option>-->
+<!--                    <option>17:15</option>-->
+<!--                    <option>17:20</option>-->
+<!--                    <option>17:25</option>-->
+<!--                    <option>17:30</option>-->
+<!--                    <option>17:35</option>-->
+<!--                    <option>17:40</option>-->
+<!--                    <option>17:45</option>-->
+<!--                    <option>17:50</option>-->
+<!--                    <option>17:55</option>-->
+<!--                    <option>18:00</option>-->
+<!--                    <option>18:05</option>-->
+<!--                    <option>18:10</option>-->
+<!--                    <option>18:15</option>-->
+<!--                    <option>18:20</option>-->
+<!--                    <option>18:25</option>-->
+<!--                    <option>18:30</option>-->
+<!--                    <option>18:35</option>-->
+<!--                    <option>18:40</option>-->
+<!--                    <option>18:45</option>-->
+<!--                    <option>18:50</option>-->
+<!--                    <option>18:55</option>-->
+<!--                    <option>19:00</option>-->
+<!--                    <option>19:05</option>-->
+<!--                    <option>19:10</option>-->
+<!--                    <option>19:15</option>-->
+<!--                    <option>19:20</option>-->
+<!--                    <option>19:25</option>-->
+<!--                    <option>19:30</option>-->
+<!--                    <option>19:35</option>-->
+<!--                    <option>19:40</option>-->
+<!--                    <option>19:45</option>-->
+<!--                    <option>19:50</option>-->
+<!--                    <option>19:55</option>-->
+<!--                    <option>20:00</option>-->
+<!--                    <option>20:05</option>-->
+<!--                    <option>20:10</option>-->
+<!--                    <option>20:15</option>-->
+<!--                    <option>20:20</option>-->
+<!--                    <option>20:25</option>-->
+<!--                    <option>20:30</option>-->
+<!--                    <option>20:35</option>-->
+<!--                    <option>20:40</option>-->
+<!--                    <option>20:45</option>-->
+<!--                    <option>20:50</option>-->
+<!--                    <option>20:55</option>-->
+<!--                    <option>21:00</option>-->
+<!--                    <option>21:05</option>-->
+<!--                    <option>21:10</option>-->
+<!--                    <option>21:15</option>-->
+<!--                    <option>21:20</option>-->
+<!--                    <option>21:25</option>-->
+<!--                    <option>21:30</option>-->
+<!--                    <option>21:35</option>-->
+<!--                    <option>21:40</option>-->
+<!--                    <option>21:45</option>-->
+<!--                    <option>21:50</option>-->
+<!--                    <option>21:55</option>-->
+<!--                    <option>22:00</option>-->
+<!--                    <option>22:05</option>-->
+<!--                    <option>22:10</option>-->
+<!--                    <option>22:15</option>-->
+<!--                    <option>22:20</option>-->
+<!--                    <option>22:25</option>-->
+<!--                    <option>22:30</option>-->
+<!--                    <option>22:35</option>-->
+<!--                    <option>22:40</option>-->
+<!--                    <option>22:45</option>-->
+<!--                    <option>22:50</option>-->
+<!--                    <option>22:55</option>-->
+<!--                    <option>23:00</option>-->
+<!--                    <option>23:05</option>-->
+<!--                    <option>23:10</option>-->
+<!--                    <option>23:15</option>-->
+<!--                    <option>23:20</option>-->
+<!--                    <option>23:25</option>-->
+<!--                    <option>23:30</option>-->
+<!--                    <option>23:35</option>-->
+<!--                    <option>23:40</option>-->
+<!--                    <option>23:45</option>-->
+<!--                    <option>23:50</option>-->
+<!--                    <option>23:55</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="col-md-2">-->
+<!--                <label for="bus-type">Bus Type</label>-->
+<!--                <select id="bus-type" class="form-select">-->
+<!--                    <option>Any</option>-->
+<!--                    <option>NORMAL</option>-->
+<!--                    <option>SEMI-LUXURY</option>-->
+<!--                    <option>LUXURY</option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--            <div class="col-md-2 d-flex align-items-end">-->
+<!--                <button class="btn btn-primary search-btn">Search</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.getElementById("btn-timeTable").addEventListener("click", function() {
+        // Hide the Online Seat Reservation form
+        document.getElementById("reservation-form").style.display = "none";
+
+        // Show the Search Section in place of the Reservation Form
+        document.getElementById("search-section").style.display = "block";
+    });
+</script>
+</body>
+</html>

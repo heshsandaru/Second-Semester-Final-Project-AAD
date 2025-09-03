@@ -1,0 +1,103 @@
+CREATE DATABASE JourneyPass;
+USE JourneyPass;
+
+-- Users Table
+CREATE TABLE users (
+    uid BINARY(16) PRIMARY KEY,  -- Storing UUID as binary for efficiency
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20),
+    user_image LONGBLOB, -- Storing image as binary data
+    role ENUM('USER', 'ADMIN') DEFAULT 'USER',
+    status ENUM('ACTIVE', 'BLOCKED') DEFAULT 'ACTIVE',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Buses Table
+CREATE TABLE buses (
+    bus_id INT AUTO_INCREMENT PRIMARY KEY,
+    bus_model VARCHAR(255) NOT NULL,
+    deport VARCHAR(255) NOT NULL,
+    bus_number VARCHAR(50) UNIQUE NOT NULL,
+    total_seats INT NOT NULL,
+    bus_image VARCHAR(255), -- Storing image path
+    bus_type ENUM('Luxury', 'Semi-Luxury', 'Normal') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Routes Table
+CREATE TABLE routes (
+    route_number VARCHAR(255) NOT NULL,
+    departure VARCHAR(255) NOT NULL,
+    destination VARCHAR(255) NOT NULL,
+    distance_km INT NOT NULL,
+    estimated_time TIME NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Schedules Table
+CREATE TABLE schedules (
+    schedule_id INT AUTO_INCREMENT PRIMARY KEY,
+    bus_number VARCHAR(255),
+    route_number VARCHAR(255),
+    departure_time DATETIME NOT NULL,
+    arrival_time DATETIME NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    available_seats INT NOT NULL,
+    FOREIGN KEY (bus_number) REFERENCES buses(bus_number) ON DELETE CASCADE,
+    FOREIGN KEY (route_number) REFERENCES routes(route_number) ON DELETE CASCADE
+);
+
+-- Bookings Table
+CREATE TABLE bookings (
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    schedule_id INT,
+    booking_status ENUM('CONFIRMED', 'CANCELLED', 'PENDING') DEFAULT 'CONFIRMED',
+    payment_status ENUM('PAID', 'UNPAID') DEFAULT 'UNPAID',
+    booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id) ON DELETE CASCADE
+);
+
+-- Seats Table
+CREATE TABLE seats (
+    seat_id INT AUTO_INCREMENT PRIMARY KEY,
+    schedule_id INT,
+    seat_number VARCHAR(10) NOT NULL,
+    is_booked BOOLEAN DEFAULT FALSE,
+    booking_id INT NULL,
+    FOREIGN KEY (schedule_id) REFERENCES schedules(schedule_id) ON DELETE CASCADE,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE SET NULL
+);
+
+-- Payments Table
+CREATE TABLE payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT,
+    payment_method ENUM('CREDIT_CARD', 'DEBIT_CARD', 'MOBILE_WALLET', 'CASH_ON_DELIVERY') NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE
+);
+
+-- Cancellations & Refunds Table
+CREATE TABLE cancellations (
+    cancellation_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_id INT,
+    user_id INT,
+    reason TEXT,
+    refund_status ENUM('PENDING', 'APPROVED', 'REJECTED') DEFAULT 'PENDING',
+    request_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (booking_id) REFERENCES bookings(booking_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Revenue & Analytics Table
+CREATE TABLE analytics (
+    analytics_id INT AUTO_INCREMENT PRIMARY KEY,
+    total_bookings INT DEFAULT 0,
+    total_revenue DECIMAL(10,2) DEFAULT 0,
+    report_date DATE NOT NULL UNIQUE
+);

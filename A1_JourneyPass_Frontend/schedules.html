@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Time Table</title>
+    <!-- Add Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+    <link rel="stylesheet" href="styles/admin/analytics_section.css">
+</head>
+<body>
+
+<div class="analytics_container">
+    <h3 class="analytics-heading">Analytics / Booking Details</h3>
+
+    <!-- Search Field with Button on Right -->
+    <div class="search-field d-flex justify-content-center my-3">
+        <div class="input-group" style="max-width: 500px;">
+            <input type="text" class="form-control" id="searchAnalytics" placeholder="Search for Booking details...">
+            <div class="input-group-append">
+                <button class="btn btn-dark" type="button" id="searchButton">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="table-header">Results Of Analytics Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Booking ID</th>
+            <th>Passenger ID</th>
+            <th>Schedule ID</th>
+            <th>Seat Number</th>
+            <th>Booking Status</th>
+            <th>Payment Status</th>
+            <th>bookedAt</th>
+        </tr>
+        </thead>
+        <tbody id="booking-tbody">
+        </tbody>
+    </table>
+</div>
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Correct jQuery version -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="js/admin/analytics_section.js"></script>
+<script>
+</script>
+</body>
+</html>

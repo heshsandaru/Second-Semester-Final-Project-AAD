@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Time Table</title>
+  <!-- Add Bootstrap CDN -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles/admin/home_section.css">
+</head>
+<body>
+
+<div class="schedule-table-container">
+  <table class="schedule-table table-bordered table-striped">
+    <thead class="thead-primary">
+    <tr>
+      <th>Passenger ID</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>NIC/Passport</th>
+      <th>Mobile</th>
+      <th>Status</th>
+    </tr>
+    </thead>
+    <tbody id="schedule-passenger-tbody">
+    <tr>
+      <td>1</td>
+      <td>Mark Samarasinghe</td>
+      <td>mark@gmail.com</td>
+      <td>199030012234</td>
+      <td>+94 77 887 6789</td>
+      <td>
+        <button class="schedule-status-button">Active</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Correct jQuery version -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  $(document).ready(function () {
+    loadPassengers();
+
+    function loadPassengers() {
+      $.ajax({
+        url: 'http://localhost:8080/api/v1/JourneyPass/passenger/getAll',
+        method: 'GET',
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("authToken"),
+          "Content-Type": "application/json"
+        },
+        success: function (passengers) {
+          const tbody = $('#schedule-passenger-tbody');
+          tbody.empty(); // Clear old data
+
+          passengers.forEach(passenger => {
+            const statusBtnClass = passenger.status === 'ACTIVE' ? 'btn-success' : 'btn-danger';
+            const nextStatus = passenger.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+
+            const row = `
+              <tr>
+                <td>${passenger.passengerId}</td>
+                <td>${passenger.passengerName}</td>
+                <td>${passenger.passengerEmail}</td>
+                <td>${passenger.nic}</td>
+                <td>${passenger.passengerMobile}</td>
+                <td>
+                  <button class="btn ${statusBtnClass} toggle-status-btn"
+                          data-id="${passenger.passengerId}"
+                          data-next-status="${nextStatus}">
+                    ${passenger.status}
+                  </button>
+                </td>
+              </tr>
+            `;
+            tbody.append(row);
+          });
+
+          attachToggleEvents();
+        },
+        error: function () {
+          alert('Failed to load passengers');
+        }
+      });
+    }
+
+    function attachToggleEvents() {
+      $('.toggle-status-btn').off('click').on('click', function () {
+        const passengerId = $(this).data('id');
+        const newStatus = $(this).data('next-status');
+        const actionText = newStatus === 'ACTIVE' ? 'activate' : 'deactivate';
+
+        const confirmationNoty = new Noty({
+          text: `Are you sure you want to <strong>${actionText}</strong> this passenger?`,
+          type: 'warning',
+          layout: 'center',
+          theme: 'semanticui',
+          killer: true,
+          modal: true,
+          buttons: [
+            Noty.button('Yes', 'btn btn-success m-1', function () {
+              $.ajax({
+                url: `http://localhost:8080/api/v1/JourneyPass/passenger/updateStatus?passengerId=${passengerId}&status=${newStatus}`,
+                method: 'PUT',
+                headers: {
+                  "Authorization": "Bearer " + localStorage.getItem("authToken"),
+                  "Content-Type": "application/json"
+                },
+                success: function (res) {
+                  if (res.code === 200) {
+                    new Noty({
+                      text: `Passenger successfully ${actionText}d.`,
+                      type: 'success',
+                      timeout: 2000
+                    }).show();
+                    loadPassengers();
+                  } else {
+                    new Noty({
+                      text: 'Status update failed.',
+                      type: 'error',
+                      timeout: 2000
+                    }).show();
+                  }
+                },
+                error: function () {
+                  new Noty({
+                    text: 'Something went wrong while updating status.',
+                    type: 'error',
+                    timeout: 2000
+                  }).show();
+                }
+              });
+              confirmationNoty.close();
+            }),
+
+            Noty.button('No', 'btn btn-danger m-1', function () {
+              confirmationNoty.close(); // ✅ This will now always close the modal
+            })
+          ]
+        });
+
+        confirmationNoty.show();
+      });
+    }
+  });
+</script>
+</body>
+</html>

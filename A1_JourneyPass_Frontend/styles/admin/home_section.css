@@ -1,0 +1,176 @@
+body {
+    background-color: #f6f6f6;
+}
+
+/* styles.css */
+.home-section {
+    height: 60vh;
+    padding: 30px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    background: linear-gradient(to bottom, #cbddf3, #0808b6); /* from-blue-400 to-blue-500 */
+}
+
+@keyframes colorBounce {
+    0% {
+        color: #ffffff; /* Red */
+        transform: translateY(0);
+    }
+    50% {
+        color: #064ad5; /* Green */
+        transform: translateY(-10px); /* Move up */
+    }
+    100% {
+        color: #070000; /* Blue */
+        transform: translateY(0); /* Back to original position */
+    }
+}
+.animated-heading {
+    font-family: Copperplate;
+    border: #25d366;
+    font-size: 4.5rem;
+    font-weight: bold;
+    text-align: center;
+    animation: colorBounce 2s infinite ease-in-out;
+}
+
+.lead{
+    font-family: "Al Tarikh";
+}
+
+.logo-img {
+    max-width: 200px; /* Adjust size as needed */
+    margin: 15px 0; /* Add spacing above and below */
+    animation: fadeIn 1.5s ease-in-out; /* Smooth fade-in effect */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-hover {
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+.card-hover:hover {
+    box-shadow: 0px 4px 15px rgba(11, 59, 97, 0.7); /* Smooth shadow effect */
+    transform: translateY(-5px); /* Slight lift effect */
+}
+
+.stat-card {
+    transition: all 0.3s ease-in-out; /* Smooth transition */
+}
+
+.stat-card:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+    transform: translateY(-5px); /* Slight lift effect */
+}
+
+.header {
+    background: #010148;
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Al Tarikh;
+}
+.header>span{
+    font-family: Copperplate;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+
+/* Table Container */
+.schedule-table-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Table Styling */
+.schedule-table {
+    width: 90%;
+    max-width: 1000px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+    background-color: white;
+}
+
+/* Table Header */
+.schedule-table thead {
+    background-color: #008dff; /* Dark Blue */
+    color: white;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+/* Table Cells */
+.schedule-table th, .schedule-table td {
+    padding: 15px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: "Al Tarikh";
+}
+
+/* Alternating Row Colors */
+.schedule-table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Hover Effect */
+.schedule-table tbody tr:hover {
+    background-color: rgba(11, 59, 97, 0.1);
+    transition: 0.3s ease-in-out;
+}
+
+/* Status Button */
+.schedule-status-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.schedule-status-button:hover {
+    background-color: #218838;
+}
+
+.schedule-table-container {
+    padding: 30px;
+}
+
+.schedule-status-button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: white;
+}
+
+.schedule-table-container {
+    padding: 30px;
+}
+
+.schedule-status-button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    color: white;
+}

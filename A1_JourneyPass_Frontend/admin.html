@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JourneyPass Admin Panel</title>
+    <!-- Add Bootstrap CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="assets/images/Purple_and_Navy_Modern_Bus_Tours_and_Travel_Logo-removebg-preview.png">
+    <link rel="stylesheet" href="styles/admin/home_section.css">
+    <link rel="stylesheet" href="styles/admin/bus_section.css">
+    <link rel="stylesheet" href="styles/admin/route_section.css">
+    <link rel="stylesheet" href="styles/admin/schedules_section.css">
+    <link rel="stylesheet" href="styles/admin/personal_details_section.css">
+    <link rel="stylesheet" href="styles/admin/footer_section.css">
+    <link rel="stylesheet" href="styles/admin/analytics_section.css">
+</head>
+<body>
+
+<!--<Header Section>-->
+<div class="header">
+    <span>JourneyPass</span>
+    <div>
+        <a href="#home" class="text-white">Home</a> |
+        <a href="#buses" class="text-white">Buses</a> |
+        <a href="#routes" class="text-white">Routes</a> |
+        <a href="#schedule" class="text-white">Schedule</a> |
+        <a href="#analytics" class="text-white">Analytics</a> |
+        <a href="#personalDetails" class="text-white">Login</a>
+    </div>
+</div>
+
+<!--<Home Section>-->
+<div class="home_container">
+    <!-- Hero Section -->
+    <section class="home-section text-center">
+        <h1 class="animated-heading">Welcome to JourneyPass Admin Panel.</h1>
+        <img src="assets/images/Purple_and_Navy_Modern_Bus_Tours_and_Travel_Logo-removebg-preview.png"
+             alt="JourneyPass Logo" class="logo-img">
+        <p class="lead">Manage buses, routes, schedules, and analytics with ease.</p>
+    </section>
+
+    <div class="container mx-auto my-5">
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded shadow-sm text-center stat-card">
+                    <p class="text-gray-500">Busses</p>
+                    <h2 id="homeBusCount" class="text-2xl font-bold">$154</h2>
+                    <p class="text-green-500">+5 today</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded shadow-sm text-center stat-card">
+                    <p class="text-gray-500">Routes</p>
+                    <h2 id="homeRouteCount"class="text-2xl font-bold">12</h2>
+                    <p class="text-green-500">+5 today</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded shadow-sm text-center stat-card">
+                    <p class="text-gray-500">Schedules</p>
+                    <h2 id="homeSchedulesCount"class="text-2xl font-bold">$32</h2>
+                    <p class="text-green-500">+5 today</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded shadow-sm text-center stat-card">
+                    <p class="text-gray-500">Passengers</p>
+                    <h2 id="homePassengersCount"class="text-2xl font-bold">87</h2>
+                    <p class="text-green-500">+5 today</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="schedule-table-container">
+        <table class="schedule-table table-bordered table-striped">
+            <thead class="thead-primary">
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>NIC/Passport</th>
+                <th>Mobile</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody id="schedule-passenger-tbody">
+            <tr>
+                <td>1</td>
+                <td>Mark Samarasinghe</td>
+                <td>mark@gmail.com</td>
+                <td>199030012234</td>
+                <td>+94 77 887 6789</td>
+                <td>
+                    <button class="schedule-status-button">Active</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <a href="#buses">
+                <div class="card shadow p-4 card-hover">
+                    <i class="fas fa-bus fa-3x text-primary"></i>
+                    <h3 class="mt-3">Buses</h3>
+                    <p>Manage bus details efficiently.</p>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="#routes">
+                <div class="card shadow p-4 card-hover">
+                    <i class="fas fa-map-marked-alt fa-3x text-success"></i>
+                    <h3 class="mt-3">Routes</h3>
+                    <p>Define and organize travel routes.</p>
+                </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="#schedule">
+                <div class="card shadow p-4 card-hover">
+                    <i class="fas fa-calendar-alt fa-3x text-danger"></i>
+                    <h3 class="mt-3">Schedules</h3>
+                    <p>Schedule bus timings and availability.</p>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<Bus Section>-->
+<!-- Add New Bus Button in Top Right Corner -->
+<div class="bus_container">
+    <h3 class="bus-heading">Manage Buses in the System</h3>
+    <button class="btn btn-success add-button" data-toggle="modal" data-target="#addBusModal" aria-label="Add New Bus">
+        <i class="fas fa-plus"></i> Add New Bus
+    </button>
+
+    <!-- Search Field Centered on Screen -->
+    <div class="search-field">
+        <input type="text" class="form-control" id="searchBus" placeholder="Search for buses...">
+    </div>
+
+    <div class="table-header">Results Of Buses Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Bus Number</th>
+            <th>Bus Model</th>
+            <th>Seats Count</th>
+            <th>Bus Type</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="bus-tbody">
+        </tbody>
+    </table>
+</div>
+<!-- Modal for Adding New Bus -->
+<div class="modal fade" id="addBusModal" tabindex="-1" role="dialog" aria-labelledby="addBusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addBusModalLabel"><b>Add New Bus</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="bus-form">
+                    <div class="form-group">
+                        <label for="busNumber">Bus Number</label>
+                        <input type="text" class="form-control" id="busNumber" placeholder="Enter Bus Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busModel">Bus Model</label>
+                        <input type="text" class="form-control" id="busModel" placeholder="Enter Bus Model" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seatCount">Seats Count</label>
+                        <input type="number" class="form-control" id="seatCount" placeholder="Enter Seats Count" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="busType">Bus Type</label>
+                        <select class="form-control" id="busType" required>
+                            <option value="">Select</option>
+                            <option>LUXURY</option>
+                            <option>SEMI_LUXURY</option>
+                            <option>NORMAL</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="addBusButton" disabled>Add Bus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--<Route Section>-->
+<!-- Add New Route Button in Top Right Corner -->
+<div class="route_container">
+    <h3 class="route-heading">Manage Routes in the System</h3>
+    <button class="btn btn-success add-button" data-toggle="modal" data-target="#addRouteModal" aria-label="Add New Route">
+        <i class="fas fa-plus"></i> Add New route
+    </button>
+
+    <!-- Search Field Centered on Screen -->
+    <div class="search-field">
+        <input type="text" class="form-control" id="searchRoute" placeholder="Search for Route...">
+    </div>
+
+    <div class="table-header">Results Of Route Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Route Number</th>
+            <th>Departure</th>
+            <th>Destination</th>
+            <th>Bus Stops</th>
+            <th>Distance(Km)</th>
+            <th>Estimated Time</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="routeTbody">
+        </tbody>
+    </table>
+</div>
+<!-- Modal for Adding New Route -->
+<div class="modal fade" id="addRouteModal" tabindex="-1" role="dialog" aria-labelledby="addRouteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRouteModalLabel"><b>Add New Route</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="route-form">
+                    <div class="form-group">
+                        <label for="routeNumber">Route Number</label>
+                        <input type="text" class="form-control" id="routeNumber" placeholder="Enter Route Number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeDepature">Departure</label>
+                        <input type="text" class="form-control" id="routeDepature" placeholder="Enter Departure Location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeDestination">Destination</label>
+                        <input type="text" class="form-control" id="routeDestination" placeholder="Enter Destination Location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeBusStops">Bus Stops</label>
+                        <input type="text" class="form-control" id="routeBusStops" placeholder="Enter Bus Stops" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeDistance">Distance(Km)</label>
+                        <input type="number" class="form-control" id="routeDistance" placeholder="Enter Route Distance" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="routeEstimatedTime">Estimated Time</label>
+                        <input type="time" class="form-control" id="routeEstimatedTime" placeholder="Enter Estimated time" required>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" id="addRouteButton" disabled>Add Route</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<Schedule Section>-->
+<!-- Add New Schedule Button in Top Right Corner -->
+<div class="schedule_container">
+    <h3 class="schedule-heading">Manage Schedule in the System</h3>
+    <button class="btn btn-success add-button" data-toggle="modal" data-target="#addScheduleModal" aria-label="Create New Schedule">
+        <i class="fas fa-plus"></i> Create New Schedule
+    </button>
+
+    <!-- Search Field Centered on Screen -->
+    <div class="search-field">
+        <input type="text" class="form-control" id="searchSchedule" placeholder="Search for Schedule...">
+    </div>
+
+    <div class="table-header">Results Of Schedule Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Schedule Id</th>
+            <th>Arrival Time</th>
+            <th>Departure Time</th>
+            <th>Available Seats</th>
+            <th>Ticket Price</th>
+            <th>Bus Number</th>
+            <th>Route Number</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody id="schedule-tbody">
+        </tbody>
+    </table>
+</div>
+<!-- Modal for Adding New Schedule -->
+<div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addScheduleModalLabel"><b>Create New Schedule</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="schedule-form">
+                    <div class="form-group">
+                        <label for="scheduleId">Schedule Id</label>
+                        <input type="text" class="form-control" id="scheduleId" placeholder="Enter Schedule Id" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleArrivalTime">Arrival Time</label>
+                        <input type="time" class="form-control" id="scheduleArrivalTime" placeholder="Enter Arrival Time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleDepartureTime">Departure Time</label>
+                        <input type="time" class="form-control" id="scheduleDepartureTime" placeholder="Enter Departure Time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleTicketPrice">Ticket Price(Rs)</label>
+                        <input type="number" class="form-control" id="scheduleTicketPrice" placeholder="Enter Ticket Price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleAvailableSeats">Available Seats</label>
+                        <input type="number" class="form-control" id="scheduleAvailableSeats" placeholder="Enter Ticket Price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleBusNumber">Bus Number</label>
+                        <select class="form-control" id="scheduleBusNumber" required>
+                            <option value="" disabled selected>Select Bus Number</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleRouteNumber">Route Number</label>
+                        <select class="form-control" id="scheduleRouteNumber" required>
+                            <option value="" disabled selected>Select Route Number</option>
+                        </select>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary" id="createScheduleButton" disabled>Create Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<Analytics Section>-->
+<div class="analytics_container">
+    <h3 class="analytics-heading">Analytics / Booking Details</h3>
+
+    <!-- Search Field with Button on Right -->
+    <div class="search-field d-flex justify-content-center my-3">
+        <div class="input-group" style="max-width: 500px;">
+            <input type="text" class="form-control" id="searchAnalytics" placeholder="Search for Booking details...">
+            <div class="input-group-append">
+                <button class="btn btn-dark" type="button" id="searchButton">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-header">Results Of Analytics Details</div>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>Booking ID</th>
+            <th>Passenger ID</th>
+            <th>Schedule ID</th>
+            <th>Seat Number</th>
+            <th>Booking Status</th>
+            <th>Payment Status</th>
+            <th>bookedAt</th>
+        </tr>
+        </thead>
+        <tbody id="booking-tbody">
+        </tbody>
+    </table>
+</div>
+
+<!-- Personal Details Update Section -->
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6 personal-details-container">
+<!--    <h3 class="personal-details-heading">Manage Schedule in the System</h3>-->
+    <!-- User Email Display -->
+    <div class="absolute top-20 right-4 bg-white p-3 rounded-lg shadow-md displayEmail">
+        <p class="text-gray-700 font-semibold">Logged in as:</p>
+        <p class="text-blue-600 font-bold">charithmihiranga453@gmail.com</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Update Personal Details</h2>
+
+        <form id="personalDetailsForm" class="space-y-4">
+            <div>
+                <label for="fullName" class="block text-gray-600 font-medium">Full Name</label>
+                <input type="text" id="fullName" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your full name" required>
+            </div>
+
+            <div>
+                <label for="email" class="block text-gray-600 font-medium">Email</label>
+                <input type="email" id="email" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your email" required>
+            </div>
+
+            <div>
+                <label for="mobile" class="block text-gray-600 font-medium">Mobile</label>
+                <input type="tel" id="mobile" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your mobile number" required>
+            </div>
+
+            <div>
+                <label for="nic" class="block text-gray-600 font-medium">NIC/Passport</label>
+                <input type="text" id="nic" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your NIC or Passport Number" required>
+            </div>
+
+            <div class="flex space-x-4">
+                <div class="w-1/2">
+                    <label for="currentPassword" class="text-gray-600 font-medium">Current Password</label>
+                    <input type="password" id="currentPassword" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter current password" required>
+                </div>
+
+                <div class="w-1/2">
+                    <label for="newPassword" class="text-gray-600 font-medium">New Password</label>
+                    <input type="password" id="newPassword" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter a new password">
+                </div>
+            </div>
+
+            <div>
+                <label for="re-password" class="block text-gray-600 font-medium">Re-type Password</label>
+                <input type="password" id="re-password" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter Again New password" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 text-white p-3 rounded-lg font-bold hover:bg-blue-700">Update Details</button>
+        </form>
+    </div>
+</div>
+
+<!--<Footer Section>-->
+<footer class="text-white text-center py-3 mt-5">
+    <div class="container">
+        <div class="row footer-links">
+            <div class="col-md-3">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Buses</a></li>
+                    <li><a href="#">Route</a></li>
+                    <li><a href="#">Schedule</a></li>
+                    <li><a href="#">Analytics</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">T & C</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 ms-auto text-end footer-contact">
+                <p><strong>JourneyPass</strong></p>
+                <p>No. 129/5, Galle Road, Panadura, Sri Lanka.</p>
+                <p>charithmihiranga453@gmail.com</p>
+            </div>
+        </div>
+        <p class="mt-4">&copy; 2025 JourneyPass | Admin Panel</p>
+    </div>
+</footer>
+</div>
+
+
+<!-- Add Bootstrap JS and dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Correct jQuery version -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/admin/dynamic_change.js"></script>
+<script src="js/admin/home_section.js"></script>
+<script src="js/admin/bus_section.js"></script>
+<script src="js/admin/route_section.js"></script>
+<script src="js/admin/schedules_section.js"></script>
+<script src="js/admin/analytics_section.js"></script>
+</body>
+</html>

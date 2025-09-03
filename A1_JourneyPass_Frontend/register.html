@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            position: relative;
+        }
+        .bg-image {
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            filter: blur(5px);
+            z-index: -1;
+        }
+        .login-container {
+            width: 400px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .login-header {
+            background-color: #081a25;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 20px;
+        }
+        .text-center {
+            background-color: #081a25;
+            margin-bottom: 10px;
+        }
+        .have-account {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .have-account a {
+            color: #03172c;
+            text-decoration: none;
+        }
+        .have-account a:hover {
+            text-decoration: underline;
+        }
+        .password-container {
+            position: relative;
+        }
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<img src="assets/images/que-es-una-smart-city-Sep-26-2023-08-45-45-1500-AM.jpg" class="bg-image" alt="Background Image">
+<div class="login-container">
+    <div class="login-header">
+        <h4>Admin Registration</h4>
+        <p>Only for JourneyPass Staff & Agents</p>
+    </div>
+    <h5 class="text-center text-white py-2">Admin</h5>
+    <form id="register-form">
+        <div class="form-group">
+            <input type="text" id="fullName" class="form-control" placeholder="Full Name..." required>
+        </div>
+        <div class="form-group">
+            <input type="email" id="email" class="form-control" placeholder="Email..." required>
+        </div>
+        <div class="form-group password-container">
+            <input type="password" id="password" class="form-control" placeholder="Password..." required>
+            <span class="toggle-password" onclick="togglePassword('password', 'eye-icon')">
+                <i class="fas fa-eye" id="eye-icon"></i>
+            </span>
+        </div>
+        <div class="form-group password-container">
+            <input type="password" id="re-password" class="form-control" placeholder="Re-type Password..." required>
+        </div>
+        <div class="form-group">
+            <input type="number" id="phoneNumber" class="form-control" placeholder="Phone Number..." required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="role" class="form-control" placeholder="Role..." required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="status" class="form-control" placeholder="Status..." required>
+        </div>
+        <button type="submit" id="register-btn" class="btn btn-dark btn-block">Register</button>
+        <div class="have-account">
+            <a href="login.html">Do you have an Account? Login here</a>
+        </div>
+    </form>
+</div>
+<script src="js/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script>
+    function togglePassword(inputId, iconId) {
+        var passwordInput = document.getElementById(inputId);
+        var eyeIcon = document.getElementById(iconId);
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            eyeIcon.classList.remove("fa-eye");
+            eyeIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            eyeIcon.classList.remove("fa-eye-slash");
+            eyeIcon.classList.add("fa-eye");
+        }
+    }
+
+    $("#register-form").on("submit", function (event) {
+        event.preventDefault();
+
+        // Get values from input fields
+        const password = $("#password").val();
+        const rePassword = $("#re-password").val();
+
+        // Check if passwords match
+        if (password !== rePassword) {
+            $("#re-password").addClass("is-invalid");
+            $(".password-error").remove();
+            $("#re-password").after("<div class='text-danger password-error'>Passwords do not match</div>");
+            return;
+        } else {
+            $("#re-password").removeClass("is-invalid");
+            $(".password-error").remove();
+        }
+
+        const user = {
+            fullName: $("#fullName").val(),
+            email: $("#email").val(),
+            password: password,
+            phoneNumber: $("#phoneNumber").val(),
+            role:$("#role").val(),
+            status:$("#status").val()
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/JourneyPass/user/register",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify(user),
+            success: function (response) {
+                new Noty({
+                    type: "success",
+                    layout: "topRight",
+                    text: "User Registered Successfully!",
+                    timeout: 2000,
+                    callbacks: {
+                        afterClose: function () {
+                            window.location.href = "login.html";
+                        }
+                    }
+                }).show();
+                $('#register-form')[0].reset();
+                if (response && response.data) {
+                    let token = response.data.token;
+                    console.log("Token:", token);
+                    localStorage.setItem("authToken", token);
+                    sessionStorage.setItem("authToken", token);
+                } else {
+                    console.log("No token received!");
+                }
+            },
+            error: function (err) {
+                console.log("Error:", err);
+                new Noty({
+                    type: "error",
+                    layout: "topRight",
+                    text: "Registration Failed! Check console for details.!",
+                    timeout: 3000
+                }).show();
+            }
+        });
+    });
+</script>
+</body>
+</html>

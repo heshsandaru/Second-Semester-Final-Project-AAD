@@ -1,0 +1,89 @@
+.schedule-heading {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+/* Underline Animation */
+.schedule-heading::after {
+    content: "";
+    width: 50px;
+    height: 4px;
+    background: #0072be;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 0.4s ease-in-out;
+}
+
+.schedule-heading:hover::after {
+    width: 100px;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.schedule-heading {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.schedule_container {
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+.table-header {
+    background-color: #143a69;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+td:nth-child(1), td:nth-child(2) {
+    color: #000000;
+}
+td:nth-child(3), td:nth-child(4) {
+    color: #000000;
+}
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.add-button {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+}
+.search-field {
+    margin: 20px auto;
+    width: 50%;
+}
+/* Custom Animation for Modal Form */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+.modal-body {
+    animation: slideInFromLeft 0.5s ease-out;
+}

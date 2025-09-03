@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bus Time Table</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Added jQuery CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .header {
+      background: #010148;
+      padding: 10px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header>span{
+      font-family: Copperplate;
+      font-size: 30px;
+      font-weight: bold;
+    }
+
+
+
+    #seat-section{
+      margin-top: 20px;
+      display: flex;
+      gap: 30px;
+      align-items: flex-start;
+    }
+    .box1{
+      opacity: 10;
+    }
+
+    .box:hover{
+      background-color: lightgreen;
+    }
+
+    .seat-container {
+      display: flex;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .grid {
+      margin-left: 50px;
+      margin-bottom: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .left {
+      grid-template-columns: repeat(2, 30px);
+    }
+
+    .right {
+      grid-template-columns: repeat(3, 30px);
+    }
+
+    .box {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #000;
+      font-size: 15px;
+      font-weight: bold;
+      background-color: white;
+    }
+
+    .booked {
+      background-color: red;
+      color: white;
+    }
+
+    .legend {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+    }
+
+    .legend-box {
+      width: 20px;
+      height: 20px;
+      background-color: red;
+      border: 1px solid #000;
+    }
+
+    .box.selected {
+      background-color: #ff6a18;
+      color: white;
+    }
+
+    #user-details-form{
+      margin-top: 30px;
+      margin-right: 30px;
+    }
+
+    .seat-section-details{
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+
+
+
+
+    .footer {
+      background-color: #0d1726;
+      color: white;
+      padding: 40px 20px;
+    }
+
+    .feedback-box {
+      background: #f4a52d;
+      padding: 20px;
+      border-radius: 15px;
+      display: inline-block;
+      max-width: 250px;   /* Set a fixed maximum width */
+      height: 180px;
+      width: 100%;
+    }
+
+    .feedback-text {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .footer-img {
+      width: 100%;        /* Make sure it adapts to its container */
+      max-width: 250px;   /* Set a fixed maximum width */
+      height: 180px;      /* Set a fixed height to make all images uniform */
+      object-fit: cover;  /* Ensures the image fills the box without stretching */
+      border-radius: 10px;
+    }
+
+    #feedback{
+      width: 100%;        /* Make sure it adapts to its container */
+      max-width: 250px;   /* Set a fixed maximum width */
+      height: 180px;      /* Set a fixed height to make all images uniform */
+      object-fit: cover;  /* Ensures the image fills the box without stretching */
+      border-radius: 10px;
+    }
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .footer-bottom {
+      margin-top: 20px;
+      border-top: 1px solid #444;
+      padding-top: 10px;
+    }
+
+    .whatsapp-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;  /* Set width */
+      height: 60px; /* Set height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #25d366;
+      padding: 10px;
+      border-radius: 50%; /* Makes it a perfect circle */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+    }
+
+    .whatsapp-button img {
+      width: 35px; /* Adjust the icon size */
+      margin: 0; /* Remove margin */
+    }
+    .whatsapp-button::after {
+      content: "Need Help?";
+      position: absolute;
+      bottom: 70px; /* Position above the button */
+      right: 50%;
+      transform: translateX(50%);
+      background: #333;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 14px;
+      white-space: nowrap;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    }
+
+    .whatsapp-button:hover::after {
+      opacity: 1;
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+<div class="header">
+  <span>JourneyPass</span>
+  <div>
+    <a href="index.html" class="text-white">Home</a> |
+    <a href="#" class="text-white">Send Ticket</a> |
+    <a href="#" class="text-white">Transfer Ticket</a> |
+    <a href="login.html" class="text-white">Login</a>
+  </div>
+</div>
+
+
+
+
+<div id="seat-section">
+  <div class="seat-container">
+    <div class="grid left">
+      <div class="box">N/A</div>
+      <div class="box1"></div>
+      <div class="box">4</div>
+      <div class="box">5</div>
+      <div class="box">9</div>
+      <div class="box">10</div>
+      <div class="box">14</div>
+      <div class="box">15</div>
+      <div class="box">19</div>
+      <div class="box">20</div>
+      <div class="box">24</div>
+      <div class="box">25</div>
+      <div class="box">29</div>
+      <div class="box">30</div>
+      <div class="box">34</div>
+      <div class="box">35</div>
+      <div class="box">39</div>
+      <div class="box">40</div>
+      <div class="box">44</div>
+      <div class="box">45</div>
+      <div class="box">49</div>
+      <div class="box">50</div>
+    </div>
+
+    <div class="grid right">
+      <div class="box">1</div>
+      <div class="box">2</div>
+      <div class="box">3</div>
+      <div class="box">6</div>
+      <div class="box">7</div>
+      <div class="box">8</div>
+      <div class="box">11</div>
+      <div class="box">12</div>
+      <div class="box">13</div>
+      <div class="box">16</div>
+      <div class="box">17</div>
+      <div class="box">18</div>
+      <div class="box">21</div>
+      <div class="box">22</div>
+      <div class="box">23</div>
+      <div class="box">26</div>
+      <div class="box">27</div>
+      <div class="box">28</div>
+      <div class="box">31</div>
+      <div class="box">32</div>
+      <div class="box">33</div>
+      <div class="box">36</div>
+      <div class="box">37</div>
+      <div class="box">38</div>
+      <div class="box">41</div>
+      <div class="box">42</div>
+      <div class="box">43</div>
+      <div class="box">46</div>
+      <div class="box">47</div>
+      <div class="box">48</div>
+      <div class="box">51</div>
+      <div class="box">52</div>
+      <div class="box">53</div>
+    </div>
+  </div>
+
+  <div class="seat-section-details">
+    <div class="legend" style="margin-bottom: 10px;">
+      <div class="legend-box"></div>
+      <span style="font-weight: bold;">Booked Seat</span>
+    </div>
+
+    <div class="legend" style="margin-bottom: 10px;">
+      <div class="legend-box"></div>
+      <span style="font-weight: bold;">Available Seat</span>
+    </div>
+
+    <div>
+      <label id="selected-seat" >
+        Select your seat:
+      </label>
+    </div>
+
+    <div>
+      <label id="scheduleId">
+        Schedule Id: WP87-2315-JCA
+      </label>
+    </div>
+
+    <div>
+      <label id="price">
+        Price: 1350.00
+      </label>
+    </div>
+  </div>
+
+  <!-- User Details Form (Now correctly placed below legend and label) -->
+  <div id="user-details-form" class="mt-6 p-6 border border-gray-300 rounded-lg max-w-full bg-white">
+    <h3 class="text-lg font-semibold mb-4">Enter Your Details</h3>
+    <form id="booking-form" class="flex flex-wrap gap-4">
+      <div class="flex-1 min-w-[200px]">
+        <label for="full-name" class="block font-medium mb-1">Full Name:</label>
+        <input type="text" id="full-name" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex-1 min-w-[200px]">
+        <label for="PassengerEmail" class="block font-medium mb-1">Email:</label>
+        <input type="email" id="PassengerEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex-1 min-w-[200px]">
+        <label for="nic" class="block font-medium mb-1">NIC:</label>
+        <input type="text" id="nic" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+      <div class="flex-1 min-w-[200px]">
+        <label for="mobile" class="block font-medium mb-1">Mobile Number:</label>
+        <input type="tel" id="mobile" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="w-full mt-4">
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-md transition">
+          Proceed
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<footer class="footer">
+  <!-- Footer Links -->
+  <div class="row footer-links">
+    <div class="col-md-3">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Send Ticket</a></li>
+        <li><a href="#">Transfer Ticket</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="col-md-3">
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">T & C</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
+    </div>
+    <div class="col-md-3 ms-auto text-end">
+      <p><strong>journeyPass</strong></p>
+      <p>No. 129/5, Galle Road, Panadura, Sri Lanka.</p>
+      <p>charithmihiranga453@gmail.com</p>
+    </div>
+  </div>
+
+  <!-- Copyright and Contact Details -->
+  <div class="row footer-bottom text-center">
+    <div class="col-12">
+      <p>©2025 charithmihiranga453@gmail.com. All rights reserved</p>
+    </div>
+  </div>
+
+  <!-- WhatsApp Button -->
+  <div class="whatsapp-button">
+    <img src="assets/images/icons8-whatsapp-50.png" alt="WhatsApp">
+  </div>
+  </div>
+</footer>
+<script src="js/user/book_seat.js"></script>
+</body>
+</html>
