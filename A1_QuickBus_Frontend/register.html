@@ -151,12 +151,11 @@
             status:$("#status").val()
         };
 
+
         $.ajax({
             url: "http://localhost:8080/api/v1/JourneyPass/user/register",
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            contentType: "application/json",
             data: JSON.stringify(user),
             success: function (response) {
                 new Noty({
@@ -164,13 +163,10 @@
                     layout: "topRight",
                     text: "User Registered Successfully!",
                     timeout: 2000,
-                    callbacks: {
-                        afterClose: function () {
-                            window.location.href = "login.html";
-                        }
-                    }
                 }).show();
+
                 $('#register-form')[0].reset();
+
                 if (response && response.data) {
                     let token = response.data.token;
                     console.log("Token:", token);

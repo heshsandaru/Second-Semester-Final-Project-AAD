@@ -21,53 +21,66 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
-public class
-JwtFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
+
     @Autowired
     private JwtUtil jwtUtil;
+
     @Autowired
     private UserServiceImpl userService;
+
     @Value("${jwt.secret}")
     private String secretKey;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String authorization = httpServletRequest.getHeader("Authorization");
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
+        String authorization = request.getHeader("Authorization");
         String token = null;
         String email = null;
 
-
-        if (null != authorization && authorization.startsWith("Bearer ")) {
-
+        if (authorization != null && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
-            email = jwtUtil.getUsernameFromToken(token);
-            Claims claims=jwtUtil.getUserRoleCodeFromToken(token);
-            httpServletRequest.setAttribute("email", email);
-            httpServletRequest.setAttribute("role", claims.get("role"));
+
+            try {
+                // validate token structure first
+                if (token.split("\\.").length == 3) {
+                    email = jwtUtil.getUsernameFromToken(token);
+                    Claims claims = jwtUtil.getUserRoleCodeFromToken(token);
+
+                    request.setAttribute("email", email);
+                    request.setAttribute("role", claims.get("role"));
+                } else {
+                    System.out.println("⚠️ Invalid JWT format: " + token);
+                }
+            } catch (Exception e) {
+                System.out.println("⚠️ Failed to parse JWT: " + e.getMessage());
+            }
+        } else {
+            System.out.println("⚠️ Missing or invalid Authorization header: " + authorization);
         }
 
-        if (null != email && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails
-                    = userService.loadUserByUsername(email);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userService.loadUserByUsername(email);
 
             if (jwtUtil.validateToken(token, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
-                        = new UsernamePasswordAuthenticationToken(userDetails,
-                        null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails, null, userDetails.getAuthorities()
+                        );
 
-                usernamePasswordAuthenticationToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(httpServletRequest)
+                authentication.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request)
                 );
 
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
         }
-        filterChain.doFilter(httpServletRequest, httpServletResponse);
-    }
 
-    private Claims getClaimsFromJwtToken(String token) {
-        return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token).getBody();
+        filterChain.doFilter(request, response);
     }
 
 }
+

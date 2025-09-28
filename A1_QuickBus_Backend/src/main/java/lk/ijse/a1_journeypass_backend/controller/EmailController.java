@@ -24,8 +24,8 @@ public class EmailController {
     public String sendEmail() {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("charithmihiranga453@gmail.com");
-            message.setTo("charithmihiranga453@gmail.com");
+            message.setFrom("heshansandaruwan999@gmail.com");
+            message.setTo("heshansandaruwan999@gmail.com");
             message.setSubject("Your QR Code.");
             message.setText("Your QR Code has been generated.");
 

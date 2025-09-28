@@ -35,7 +35,7 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: "http://localhost:8080/api/v1/JourneyPass/booking/book",
+            url: "http://localhost:8080/api/v1/JourneyPass/booking/post",
             type: "POST",
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("authToken"),

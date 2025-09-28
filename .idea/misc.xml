@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/A1_JourneyPass_Backend/pom.xml" />
         <option value="$PROJECT_DIR$/A1_JournerPass_Frontend/pom.xml" />
+        <option value="$PROJECT_DIR$/A1_QuickBus_Backend/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
@@ -14,7 +15,7 @@
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_24" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
