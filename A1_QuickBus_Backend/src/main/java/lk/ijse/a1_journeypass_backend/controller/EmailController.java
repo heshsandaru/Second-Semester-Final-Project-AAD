@@ -42,12 +42,12 @@ public class EmailController {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-            helper.setFrom("charithmihiranga453@gmail.com");
-            helper.setTo("charithmihiranga453@gmail.com");
+            helper.setFrom("heshansandaruwan999@gmail.com");
+            helper.setTo("heshansandaruwan999@gmail.com");
             helper.setSubject("Your QR Code.");
             helper.setText("Your QR Code has been generated.");
 
-            helper.addAttachment("qr.pnd",new File("//Users//charithsiriwardana//DownloadsProject\\QrCode2025-04-15 16/07/30.png"));
+            helper.addAttachment("qr.pnd",new File("//Users//heshansandaruwan//DownloadsProject\\QrCode2025-04-15 16/07/30.png"));
 
             javaMailSender.send(message);
             return "Your Email has been send.";
