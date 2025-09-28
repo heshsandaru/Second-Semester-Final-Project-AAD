@@ -55,4 +55,8 @@ public class BookingController {
             return new ResponseUtil(500, "Error: " + e.getMessage(), null);
         }
     }
+    @GetMapping("/get-booked-seats")
+    public List<String> getBookedSeats(@RequestParam String scheduleId) {
+        return bookingService.findSeatNumbersByScheduleId(scheduleId);
+    }
 }

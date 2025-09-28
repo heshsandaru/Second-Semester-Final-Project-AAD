@@ -1,0 +1,13 @@
+.header {
+    background: #010148;
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header>span{
+    font-family: Copperplate;
+    font-size: 30px;
+    font-weight: bold;
+}

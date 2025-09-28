@@ -79,7 +79,7 @@ $(document).ready(function () {
                 Swal.fire({
                     icon: 'success',
                     title: '🎉 Booking Successful!',
-                    text: 'QR Code sent to your email.',
+                    text: '',
                     timer: 5000,
                     timerProgressBar: true,
                     showConfirmButton: false

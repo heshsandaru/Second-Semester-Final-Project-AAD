@@ -10,50 +10,35 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="styles/users/seat_layout.css">
-<!--  <link href="styles/login.css" rel="stylesheet">-->
+  <link rel="stylesheet" href="styles/users/header_section.css">
+  <link rel="stylesheet" href="styles/users/banner_section.css">
+  <link rel="stylesheet" href="styles/users/about_section.css">
+  <link rel="stylesheet" href="styles/users/footer_section.css">
+  <link rel="stylesheet" href="styles/users/search_section.css">
+  <!--  <link href="styles/login.css" rel="stylesheet">-->
   <style>
     body {
       background-color: #f8f9fa;
     }
-    .header {
-      background: #010148;
-      padding: 10px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .header>span{
-      font-family: Copperplate;
-      font-size: 30px;
-      font-weight: bold;
-    }
+
     .banner {
-      position: relative;
       background: url('assets/images/que-es-una-smart-city-Sep-26-2023-08-45-45-1500-AM.jpg') no-repeat center center/cover;
-      height: 450px;
-      display: flex;
-      align-items: start;
-      justify-content: center;
-      padding-top: 20px;
     }
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+
+    .card-header{
+      background-color: #143a69;
     }
-    .search-box {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #eaf2fa;
-      padding: 20px;
-      border-radius: 10px;
-      width: 80%;
-      max-width: 1000px;
+
+    .search-section{
+      display: none;
+    }
+
+    .login-container{
+      display: none;
+    }
+
+    #seat-section{
+      display: none;
     }
     .about-section {
       padding: 50px 30px; /* Increased top and bottom padding */
@@ -68,16 +53,6 @@
     .about-section .container {
       max-width: 1200px;
       margin: 0 auto;
-    }
-    #btn-search {
-      background-color: #f1c40f;
-      border: none;
-      color: white;
-      font-size: 15px;
-      font-weight: bold;
-    }
-    #btn-search:hover {
-      background-color: darkorange;
     }
     .partners img {
       max-height: 80px;
@@ -109,199 +84,44 @@
     #btn-timeTable:hover{
       background-color: darkorange;
     }
-
-    .footer {
-      background-color: #0d1726;
-      color: white;
-      padding: 40px 20px;
-    }
-
-    .feedback-box {
-      background: #f4a52d;
-      padding: 20px;
-      border-radius: 15px;
-      display: inline-block;
-      max-width: 250px;   /* Set a fixed maximum width */
-      height: 180px;
-      width: 100%;
-    }
-
-    .feedback-text {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .footer-img {
-      width: 100%;        /* Make sure it adapts to its container */
-      max-width: 250px;   /* Set a fixed maximum width */
-      height: 180px;      /* Set a fixed height to make all images uniform */
-      object-fit: cover;  /* Ensures the image fills the box without stretching */
-      border-radius: 10px;
-    }
-
-    #feedback{
-      width: 100%;        /* Make sure it adapts to its container */
-      max-width: 250px;   /* Set a fixed maximum width */
-      height: 180px;      /* Set a fixed height to make all images uniform */
-      object-fit: cover;  /* Ensures the image fills the box without stretching */
-      border-radius: 10px;
-    }
-    .footer-links ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .footer-links ul li {
-      margin-bottom: 10px;
-    }
-
-    .footer-links ul li a {
-      color: white;
-      text-decoration: none;
-    }
-
-    .footer-bottom {
-      margin-top: 20px;
-      border-top: 1px solid #444;
-      padding-top: 10px;
-    }
-
-    .whatsapp-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 60px;  /* Set width */
-      height: 60px; /* Set height */
+    .banner {
+      position: relative;
+      height: 450px;
       display: flex;
-      align-items: center;
+      align-items: start;
       justify-content: center;
-      background: #25d366;
-      padding: 10px;
-      border-radius: 50%; /* Makes it a perfect circle */
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+      padding-top: 20px;
     }
-
-    .whatsapp-button img {
-      width: 35px; /* Adjust the icon size */
-      margin: 0; /* Remove margin */
-    }
-    .whatsapp-button::after {
-      content: "Need Help?";
+    .overlay {
       position: absolute;
-      bottom: 70px; /* Position above the button */
-      right: 50%;
-      transform: translateX(50%);
-      background: #333;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 14px;
-      white-space: nowrap;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
-
-    .whatsapp-button:hover::after {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .search-section {
-      background: #0b3b61;
+    .search-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #eaf2fa;
       padding: 20px;
-      color: white;
-      border-radius: 10px 10px 0 0;
-      margin-bottom: -5px;
-      max-width: 1200px;
-    }
-
-    .search-title {
-      text-align: left;
-      font-size: 20px;
-      font-weight: bold;
-      padding-bottom: 10px;
-    }
-
-    label {
-      font-weight: bold;
-    }
-
-    .search-btn {
-      background-color: #f18b21;
-      border: none;
-      width: 100%;
-      height: 40px;
-    }
-
-    .search-btn:hover{
-      background-color: #25d366;
-    }
-
-    .search-section {
-      display: none;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .card-header{
-      background-color: #143a69;
-    }
-
-
-    /*table container*/
-    .container {
+      border-radius: 10px;
       width: 80%;
-      margin: auto;
-      margin-top: 20px;
+      max-width: 1000px;
     }
-    .table-container {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      overflow: hidden;
-    }
-    .table-header {
-      background-color: #143a69;
+    #btn-search {
+      background-color: #f1c40f;
+      border: none;
       color: white;
-      padding: 10px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      text-align: center;
-      border-bottom: 1px solid #812929;
-    }
-    th {
-      background-color: #000000;
-      color: white;
-    }
-    td:nth-child(1), td:nth-child(2) {
-      color: #000000;
+      font-size: 15px;
       font-weight: bold;
     }
-    td:nth-child(3), td:nth-child(4),td:nth-child(5) {
-      color: #000000;
-      font-weight: bold;
-    }
-    tr:nth-child(even) {
-      background-color: #b6b6b6;
+    #btn-search:hover {
+      background-color: darkorange;
     }
 
-    .login-container{
-      display: none;
-    }
 
-    #seat-section{
-      display: none;
-    }
   </style>
 </head>
 <body>
@@ -482,27 +302,23 @@
       <span style="font-weight: bold;">Booked Seat</span>
     </div>
 
-    <div class="legend" style="margin-bottom: 10px;">
-      <div class="legend-box"></div>
+    <div class="legend2" style="margin-bottom: 10px;">
+      <div class="legend-box" style="width: 20px; height: 20px; background-color: #86ea86; display: inline-block; margin-right: 8px;"></div>
       <span style="font-weight: bold;">Available Seat</span>
     </div>
 
     <div>
-      <label id="selected-seat" >
-        Select your seat:
-      </label>
+      <label id="selected-seat" >Select your seat:</label>
     </div>
 
     <div>
-      <label id="scheduleId">
-        Schedule Id:
-      </label>
+      <label><span id="scheduleIdDisplay"></span></label>
+      <input type="hidden" id="scheduleIdInput">
     </div>
 
     <div>
-      <label id="price">
-        Price:
-      </label>
+      <label>Price: <span id="priceDisplay"></span></label>
+      <input type="hidden" id="priceInput">
     </div>
   </div>
 
@@ -537,63 +353,63 @@
 </div>
 
 <footer class="footer">
-<!--  <div class="container">-->
-<!--    <div class="row">-->
-<!--      &lt;!&ndash; Feedback Section &ndash;&gt;-->
-<!--      <div id="" class="col-md-4 text-center">-->
-<!--        <div class="feedback-box">-->
-<!--          <span class="feedback-icon">💬</span>-->
-<!--          <span class="feedback-text">Feedback</span>-->
-<!--        </div>-->
-<!--      </div>-->
+  <!--  <div class="container">-->
+  <!--    <div class="row">-->
+  <!--      &lt;!&ndash; Feedback Section &ndash;&gt;-->
+  <!--      <div id="" class="col-md-4 text-center">-->
+  <!--        <div class="feedback-box">-->
+  <!--          <span class="feedback-icon">💬</span>-->
+  <!--          <span class="feedback-text">Feedback</span>-->
+  <!--        </div>-->
+  <!--      </div>-->
 
-<!--      &lt;!&ndash; Image Links Section &ndash;&gt;-->
-<!--      <div class="col-md-4 text-center">-->
-<!--        <img src="assets/images/panadura-to-kankesanthurai-ncg-express-bus.webp" alt="Reserve an Entire Bus" class="footer-img">-->
-<!--        <p>RESERVE AN ENTIRE BUS</p>-->
-<!--      </div>-->
-<!--      <div class="col-md-4 text-center">-->
-<!--        <img src="assets/images/istockphoto-1287186685-612x612.jpg" alt="News" class="footer-img">-->
-<!--        <p>NEWS</p>-->
-<!--      </div>-->
-<!--    </div>-->
+  <!--      &lt;!&ndash; Image Links Section &ndash;&gt;-->
+  <!--      <div class="col-md-4 text-center">-->
+  <!--        <img src="assets/images/panadura-to-kankesanthurai-ncg-express-bus.webp" alt="Reserve an Entire Bus" class="footer-img">-->
+  <!--        <p>RESERVE AN ENTIRE BUS</p>-->
+  <!--      </div>-->
+  <!--      <div class="col-md-4 text-center">-->
+  <!--        <img src="assets/images/istockphoto-1287186685-612x612.jpg" alt="News" class="footer-img">-->
+  <!--        <p>NEWS</p>-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-    <!-- Footer Links -->
-    <div class="row footer-links">
-      <div class="col-md-3">
-        <ul>
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Login</a></li>
-          <li><a href="#">Send Ticket</a></li>
-          <li><a href="#">Transfer Ticket</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
-      </div>
-      <div class="col-md-3">
-        <ul>
-          <li><a href="#">FAQ</a></li>
-          <li><a href="#">T & C</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div class="col-md-3 ms-auto text-end">
-        <p><strong>QuickBus</strong></p>
-        <p>No. 129/5, Galle Road, Panadura, Sri Lanka.</p>
-        <p>heshansandaruwan999@gmail.com</p>
-      </div>
+  <!-- Footer Links -->
+  <div class="row footer-links">
+    <div class="col-md-3">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Login</a></li>
+        <li><a href="#">Send Ticket</a></li>
+        <li><a href="#">Transfer Ticket</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
     </div>
-
-    <!-- Copyright and Contact Details -->
-    <div class="row footer-bottom text-center">
-      <div class="col-12">
-        <p>©2025 heshansandaruwan999@gmail.com. All rights reserved</p>
-      </div>
+    <div class="col-md-3">
+      <ul>
+        <li><a href="#">FAQ</a></li>
+        <li><a href="#">T & C</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+      </ul>
     </div>
-
-    <!-- WhatsApp Button -->
-    <div class="whatsapp-button">
-      <img src="assets/images/icons8-whatsapp-50.png" alt="WhatsApp">
+    <div class="col-md-3 ms-auto text-end">
+      <p><strong>QuickBus</strong></p>
+      <p>No. 129/5, Galle Road, Panadura, Sri Lanka.</p>
+      <p>heshansandaruwan999@gmail.com</p>
     </div>
+  </div>
+
+  <!-- Copyright and Contact Details -->
+  <div class="row footer-bottom text-center">
+    <div class="col-12">
+      <p>©2025 heshansandaruwan999@gmail.com. All rights reserved</p>
+    </div>
+  </div>
+
+  <!-- WhatsApp Button -->
+  <div class="whatsapp-button">
+    <img src="assets/images/icons8-whatsapp-50.png" alt="WhatsApp">
+  </div>
   </div>
 </footer>
 
@@ -676,24 +492,34 @@
       </span>
     </div>
     <div class="forgot-password">
-      <a href="#">Forgot Password?</a>
+      <a href="#">register</a>
     </div>
     <button type="submit" id="submit-btn" class="btn btn-dark btn-block">Login</button>
   </form>
 </div>
 
+<div id="loader" style="position: fixed; width: 100%; height: 100%; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+  Loading...
+</div>
+
+<div id="main-content" style="display: none;">
+  <h1>Welcome to QuickBus</h1>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/user/index.js"></script>
 <script src="js/user/checkSchedule.js"></script>
 <script src="js/user/checkTimetable.js"></script>
 <script src="js/user/book_seat.js"></script>
-
 <script>
-  document.getElementById("loginLink").addEventListener("click", function(event) {
-    console.log("ghjj")
-    event.preventDefault();
-    document.getElementById("loginForm").style.display = "block";
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+    }, 1500);
   });
 </script>
 </body>

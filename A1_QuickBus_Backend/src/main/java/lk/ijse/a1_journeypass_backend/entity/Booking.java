@@ -23,6 +23,9 @@ public class Booking {
     @Column(nullable = false)
     private int seatsNumber;
 
+    @Column(length = 255)
+    private String bookedSeatsNumber;
+
     private BigDecimal seatPrice;
 
     @Enumerated(EnumType.STRING)

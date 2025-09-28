@@ -1,0 +1,66 @@
+.footer {
+    background-color: #0d1726;
+    color: white;
+    padding: 40px 20px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
+
+.whatsapp-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;  /* Set width */
+    height: 60px; /* Set height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #25d366;
+    padding: 10px;
+    border-radius: 50%; /* Makes it a perfect circle */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.whatsapp-button img {
+    width: 35px; /* Adjust the icon size */
+    margin: 0; /* Remove margin */
+}
+.whatsapp-button::after {
+    content: "Need Help?";
+    position: absolute;
+    bottom: 70px; /* Position above the button */
+    right: 50%;
+    transform: translateX(50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.whatsapp-button:hover::after {
+    opacity: 1;
+    visibility: visible;
+}

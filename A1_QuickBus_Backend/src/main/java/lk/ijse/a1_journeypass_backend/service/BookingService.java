@@ -11,4 +11,6 @@ public interface BookingService {
     List<BookingDTO> getAllBookings();
     List<BookingDTO> getBookingsByDate(LocalDate date);
     void savePassengerAndBooking(PassengerDTO passengerDTO, BookingDTO bookingDTO);
+    List<String> findSeatNumbersByScheduleId(String scheduleId);
+
 }

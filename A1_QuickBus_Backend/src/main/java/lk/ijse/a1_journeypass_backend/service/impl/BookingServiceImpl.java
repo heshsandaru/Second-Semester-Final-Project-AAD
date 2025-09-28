@@ -186,7 +186,7 @@ public class BookingServiceImpl implements BookingService {
 
             emailService.sendEmailWithAttachment(
                     email,
-                    "JourneyPass Booking QR Code",
+                    "QuickBuss Booking QR Code",
                     "Hi " + savedPassenger.getPassengerName() + ",\n\n" +
                             "Your booking was successful. Please find the QR code attached below.\n\n" +
                             "Thank you for choosing JourneyPass! 🚍",
@@ -195,5 +195,9 @@ public class BookingServiceImpl implements BookingService {
         } catch (MessagingException e) {
             throw new RuntimeException("Failed to send email with QR code", e);
         }
+    }
+    @Override
+    public List<String> findSeatNumbersByScheduleId(String scheduleId) {
+        return bookingRepo.findSeatNumbersByScheduleId(scheduleId);
     }
 }

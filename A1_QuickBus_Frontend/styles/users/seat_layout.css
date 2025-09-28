@@ -1,9 +1,9 @@
 #seat-section{
+    margin-top: 20px;
     display: flex;!important;
     gap: 30px;
-    align-items: flex-start;!important;
+    align-items: flex-start;
 }
-
 .box1{
     opacity: 10;
 }
@@ -13,15 +13,15 @@
 }
 
 .seat-container {
-    display: flex;!important;
+    display: flex;
     gap: 30px;
-    align-items: start;!important;
+    align-items: start;
 }
 
 .grid {
     margin-left: 50px;
     margin-bottom: 10px;
-    display: grid;!important;
+    display: grid;
     gap: 10px;
 }
 
@@ -33,13 +33,12 @@
     grid-template-columns: repeat(3, 30px);
 }
 
-
 .box {
     width: 30px;
     height: 30px;
     display: flex;
-    justify-content: center;!important;
-    align-items: center;!important;
+    justify-content: center;
+    align-items: center;
     border: 2px solid #000;
     font-size: 15px;
     font-weight: bold;
@@ -53,8 +52,8 @@
 
 .legend {
     margin-top: 20px;
-    display: flex;!important;
-    align-items: center;!important;
+    display: flex;
+    align-items: center;
     gap: 10px;
     font-size: 16px;
 }
@@ -76,15 +75,13 @@
     margin-right: 30px;
 }
 
-.info-label {
-    font-weight: bold;
-    font-size: 16px;
-    margin-bottom: 10px;
-    display: block;
-}
-
 .seat-section-details{
     max-width: 400px;
-    display: flex;!important;
-    flex-direction: column;!important;
+    display: flex;
+    flex-direction: column;
+}
+
+.box.booked {
+    background-color: #5cabfa;
+    cursor: not-allowed;
 }

@@ -1,0 +1,36 @@
+.banner {
+    position: relative;
+    height: 450px;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    padding-top: 20px;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+.search-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #eaf2fa;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 1000px;
+}
+#btn-search {
+    background-color: #f1c40f;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+}
+#btn-search:hover {
+    background-color: darkorange;
+}
